@@ -20,4 +20,4 @@
 - Pagina di errore errorDataPage.php (?)
 - Utilizzo del reCAPTCHA (?)
 
-2. Codice Front-end
+## Codice Front-end

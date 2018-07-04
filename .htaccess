@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /.htpasswd
+Require valid-user # --> $_SERVER['PHP_AUTH_USER'];
+# (Require user user1)
