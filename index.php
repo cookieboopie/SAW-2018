@@ -2,7 +2,7 @@
 <html lang="en">
 
 <header>
-<title>Sito | Registrati</title>
+<title>NotTooBed | Registration</title>
 
 <?php require 'indexHeader.php'; ?>
 
@@ -10,6 +10,7 @@
 
 <section class="wrapper">
     <div class="inner">
+        <div class="close">+</div>
         <form id="regForm">
             <label for="regUsr">Username </label>
             <input type="text" id="regUsr" name="regUsr">
@@ -27,6 +28,7 @@
             <input type="text" id="logUsr" name="logUsr">
             <label for="logPw">Password </label>
             <input type="text" id="logPw" name="logPw">
+            <input type="submit" id="logSubmit" value="Login"
         </form>
     </div>
 </section>
