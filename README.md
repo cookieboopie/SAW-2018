@@ -1,6 +1,6 @@
 # SAW-2018
 
-# Codice Back-end
+1. Codice Back-end
 - Codice del Login
 - Codice di Registrazione
 - Controllo del Cookie
@@ -20,4 +20,4 @@
 - Pagina di errore errorDataPage.php (?)
 - Utilizzo del reCAPTCHA (?)
 
-# Codice Front-end
+2. Codice Front-end
