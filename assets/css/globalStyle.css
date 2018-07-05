@@ -1,22 +1,22 @@
 @import "320-480.css" screen and (max-width: 480px); 
 @import "780-980.css" screen and (max-width: 980px);
-
+/*
 .grid_container{
     display:grid;
     grid-template-columns: repeat(24, 1fr);
     grid-template-rows: repeat(24,1fr);
     height:1px;
-    /*grid-auto-rows:minmax(1px,auto);/*40px default, but if it goes beyond, it will go in auto mode, stretching every oter columns on the same row.*/
+    //grid-auto-rows:minmax(1px,auto);/*40px default, but if it goes beyond, it will go in auto mode, stretching every oter columns on the same row.
     grid-gap:1em;
 
 }
 .grid_container > div{
     padding:1em;
-   /* background:#eee;*/
-}
+   
+}*/
 /*.grid_container > div:nth-child(odd){
     background:#ddd;
-}*/
+}*//*
 .slideshow{
     grid-column:1/14;
     grid-row:1/27;
@@ -77,7 +77,7 @@
 .active, .dots:hover {
     background-color: #ff0000;     
 
-}
+}*/
 input{
     width:50%;
     display: block;
