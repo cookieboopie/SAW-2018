@@ -25,8 +25,8 @@
             <form id="regForm">
                 <label for="regUsr">Username </label>
                 <input type="text" id="regUsr" name="regUsr">
-                <label for="regMail">E-mail </label>
-                <input type="text" id="regMail" name="regMail">
+                <label for="regEml">E-mail </label>
+                <input type="text" id="regEml" name="regEml">
                 <label for="regPwd">Password </label>
                 <input type="password" id="regPwd" name="regPwd">
                 <label for="pwdC">Conferma Password </label>

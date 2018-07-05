@@ -9,7 +9,7 @@ var allValid;
    Il check si può fare on("input", callback) o on("change", callback") e, magari, che al successivo input l'eventuale classe di errore viene disattivata. */
 
 function validateFields(formId) {
-   
+
 }
 
 
