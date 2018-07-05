@@ -2,7 +2,7 @@
 <html lang="en">
 
 <header>
-<title>Sito | Homepage</title>
+<title>NotTooBed | Homepage</title>
 
 <?php require 'indexHeader.php'; ?>
 

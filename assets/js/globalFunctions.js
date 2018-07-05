@@ -9,7 +9,7 @@ var allValid;
    Il check si può fare on("input", callback) o on("change", callback") e, magari, che al successivo input l'eventuale classe di errore viene disattivata. */
 
 function validateFields(formId) {
-    alert("babbo");
+   
 }
 
 
@@ -21,34 +21,59 @@ function manageResults(someData) {
     }
 }
 
-$('#regSubmit').on("submit", function(e) {
-    e.preventDefault();
+$('document').ready(function() {
+    $('#regSubmit').on("submit", function(e) {
+        e.preventDefault();
+    
+        if(allValid) {
+            $.ajax({
+                url: 'renatoReg.php',
+                type: 'POST',
+                dataType: 'JSON',
+                error: function(XHR, ajaxOptions, thrownError) {
+                   $('#inputError').html('<p>An error has occurred!</p>'); /* <?php echo htmlspecialchars($infoAd); ?> 
+                                                                              Nel PHP crei un oggetto con new stdClass() e gli inserisci campi con -> e poi, prima di spedirlo in echo, fai json_encode($returnObj) */
+                },
+                success: function(returnData) {
+                    manageResults(returnData);
+                }
+            });
+        } else {
+            
+        }e
+    }); 
+    
+    $('#regForm input').on("change", function() {
+        validateFields();
+        alert("ciao");
+    });
+    
+    $(".close").click(function() {
+        $(".wrapper").hide();
+    });
 
-    if(allValid) {
-        $.ajax({
-            url: 'renatoReg.php',
-            type: 'POST',
-            dataType: 'JSON',
-            error: function(XHR, ajaxOptions, thrownError) {
-               $('#inputError').html('<p>An error has occurred!</p>'); /* <?php echo htmlspecialchars($infoAd); ?> 
-                                                                          Nel PHP crei un oggetto con new stdClass() e gli inserisci campi con -> e poi, prima di spedirlo in echo, fai json_encode($returnObj) */
-            },
-            success: function(returnData) {
-                manageResults(returnData);
-            }
-        });
-    } else {
-        
-    }
-}); 
+    $(".regBtn").click(function(){
+        $(".wrapper").css("display","flex");
+        $(".reg").click();
+    });
 
-$('#regForm input').on("change", function() {
-    validateFields();
+    $(".logBtn").click(function(){
+        $(".wrapper").css("display","flex");
+        $(".log").click();
+    });
+
+    $(".reg").click(function(){
+        $("#logForm").hide();
+        $("#regForm").show();
+    })
+    $(".log").click(function(){
+        $("#logForm").show();
+        $("#regForm").hide();
+    })
+
 });
 
-$('.close').on("click", function(){
-    $('.inner').hide();
-})
+
 
 /* Nelle query SQL se puoi usa i Prepared Statements in INSERT e in SELECT. Ma se sono query piccole, sono più lenti che usare il mysqli_query o $sqliObj->query, perciò magari si possono invece usare questi due. In questo caso fai sempre la trim degli input, e poi se sono Integer per validarli bast il cast (int), mentre se sono di tipo String usa mysqli_real_escape_string o $sqliObj->real_escape_string e ricordati di passarli alle query come stringhe, cioè usa gli apici ''.
    Esempio di SELECT: $sqlQuery = "SELECT * FROM Table WHERE someField='" . $someVar "'"; */
