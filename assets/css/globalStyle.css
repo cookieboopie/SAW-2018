@@ -83,11 +83,12 @@ input{
     display: block;
     margin: 15px auto;
 }
-#logForm{
-    display:none;
-}
+
 body{
     margin:0;
+}
+#logForm{
+    display:none;
 }
 .navbar{
     display:inline-block;
