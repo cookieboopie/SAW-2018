@@ -1,7 +1,6 @@
 var regRegex = [];
 
 var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 var allValid;
 
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
@@ -18,10 +17,11 @@ var allValid;
   Ma a sto punto faccio ajax direttamente in php (?).
 */
 
-function checkLength(o,name,min,max){
-  if ( o.val().length > max || o.val().length < min ) {
-    o.addClass( "ui-state-error" );
-    updateTips($("#"+o.id+"_err"),"Length of " + n + " must be between " +
+/*Ok la checkLength funziona*/
+function checkLength(obj,field,min,max){
+  if ( $('#'+obj).val().length > max || $('#'+obj).val().length < min ) {
+    $('#'+obj).addClass( "ui-state-error" );
+    updateTips((obj+"_err"),"Length of " + field + " must be between " +
       min + " and " + max + "." );
     return false;
   } else {
@@ -32,7 +32,7 @@ function checkLength(o,name,min,max){
 function checkRegExp(o, regexp, _err){
   if ( !( regexp.test( o.val() ) ) ) {
     o.addClass( "ui-state-error" ); //obv devo farmi le classi ui
-    updateTips( n );
+    updateTips(o,_err );
     return false;
   } else {
     return true;
@@ -40,25 +40,30 @@ function checkRegExp(o, regexp, _err){
 }
 
 function updateTips(errElem,text){
-      errElem
+      $('#'+errElem)
         .text( text )
         .addClass( "ui-state-highlight" );
       setTimeout(function() {
-        errElem.removeClass( "ui-state-highlight", 1500 );
+        $('#'+errElem).removeClass( "ui-state-highlight", 1500 );
       }, 500 );
     }
 
-function validateField(inputObj){
+function validateField(inputObj){ /*inputObj è sempre l'array multidim derivante dal documentReady */
   switch(inputObj.id){
-    case("#regUsr"): 
-      
-      return checkLength(inputObj,"username",3,16) && checkRegExp();
+    case("regUsr"): 
+      var username  = $('#'+inputObj.id).val();
+      // return checkLength(inputObj,"username",3,16) && checkRegExp();
+      console.log(checkLength(inputObj.id,"username",3,16));
+      //console.log(checkRegExp($('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter."));
       break;
-    case("#regEml"): 
+    case("regEml"): 
+      var email = $("#regEml").val();
       break;
-    case("#regPwd"): 
+    case("regPwd"): 
+      var password  = $("#regPwd").val();
       break;
-    case("#pwdC"):
+    case("pwdC"):
+      var passwordC = $("#pwdC").val();
       break;
   }
 }
@@ -98,7 +103,7 @@ $( function() {
         tips.removeClass( "ui-state-highlight", 1500 );
       }, 500 );
     }
- 
+ /*
     function checkLength( o, n, min, max ) {
       if ( o.val().length > max || o.val().length < min ) {
         o.addClass( "ui-state-error" );
@@ -109,7 +114,7 @@ $( function() {
         return true;
       }
     }
- 
+ */
     function checkRegexp( o, regexp, n ) {
       if ( !( regexp.test( o.val() ) ) ) {
         o.addClass( "ui-state-error" );
@@ -193,7 +198,7 @@ $('document').ready(function() {
         }e
     });
 
-    $("#regForm input").on("change",function(){
+    $("#regForm input").on("change",function(){ /*this ha valore tipo 'input id="regUsr" name="regUsr" type="text">' ovvero un [object Object] (array multidim)*/
       validateField(this);
     });
 
