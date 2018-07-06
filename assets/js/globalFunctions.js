@@ -8,8 +8,16 @@ var allValid;
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
    Il check si può fare on("input", callback) o on("change", callback") e, magari, che al successivo input l'eventuale classe di errore viene disattivata. */
 
+/*Con questa funzione voglio: dato l'id del form da validare, prendere tutti i suoi campi e verificare che siano corretti.
+  ->dato che qua non posso fare escape (mi serve conn. al db e php), come gestirò il php? cioò come farò il php che dovrà gestirmi il mysqli_real_escape_string
+  Io so verificare i campi in php, ma non in js, quindi devo studiarmi un po' il linguaggio e le cose che devo fare.
+  Da validare: 1)USERNAME, 2)EMAIL, 3)PASSWORD, 4)CONFERMA PASSWORD(just to control che deve essere uguale all'altra). 
+  1)-required; -minimo 3/4caratteri; -regex per sintassi; -ajax per nome in uso -> ajax posso farlo in jquery!!.
+  2)-required; -regex per sintassi; -ajax per email già in uso.
+  3)-required; -minimo tot caratteri; (-almeno carattere speciale e/o numero).
+*/
 function validateFields(formId) {
-
+  
 }
 
 
@@ -21,7 +29,7 @@ function manageResults(someData) {
         window.location.replace('mainPage.php?getVar=welcomeMsg');
     }
 }
-/*
+
 $( function() {
     var dialog, form,
  
@@ -112,7 +120,7 @@ $( function() {
       dialog.dialog( "open" );
     });
   } );
-*/
+
 $('document').ready(function() {
     $('#regSubmit').on("submit", function(e) {
         e.preventDefault();
