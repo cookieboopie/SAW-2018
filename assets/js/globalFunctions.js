@@ -39,7 +39,7 @@ function checkLength(obj,field,min,max){
 
 function checkRegExp(obj, regexp, _err){
   if ( !( regexp.test( $(obj).val() ) ) ) {
-    $(obj).addClass( "ui-state-error" ); //obv devo farmi le classi ui
+    $(obj).addClass( "ui-state-error" ); //obv devo farmi le classi ui per il display di errori
     updateTips(obj,_err );
     return false;
   } else {
