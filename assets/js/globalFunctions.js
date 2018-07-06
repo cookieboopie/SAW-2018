@@ -1,7 +1,9 @@
 var regRegex = [];
 
-var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var allValid;
+var pwdRegex  = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{5,}$/ /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola*/
+var usrRegex  = /^[a-zA-Z0-9]/;
 
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
@@ -19,8 +21,8 @@ var allValid;
 
 /*Ok la checkLength funziona*/
 function checkLength(obj,field,min,max){
-  if ( $('#'+obj).val().length > max || $('#'+obj).val().length < min ) {
-    $('#'+obj).addClass( "ui-state-error" );
+  if ( $(obj).val().length > max || $(obj).val().length < min ) {
+    $(obj).addClass( "ui-state-error" );
     updateTips((obj+"_err"),"Length of " + field + " must be between " +
       min + " and " + max + "." );
     return false;
@@ -29,10 +31,10 @@ function checkLength(obj,field,min,max){
   }
 }
 
-function checkRegExp(o, regexp, _err){
-  if ( !( regexp.test( o.val() ) ) ) {
-    o.addClass( "ui-state-error" ); //obv devo farmi le classi ui
-    updateTips(o,_err );
+function checkRegExp(obj, regexp, _err){
+  if ( !( regexp.test( $(obj).val() ) ) ) {
+    $(obj).addClass( "ui-state-error" ); //obv devo farmi le classi ui
+    updateTips(obj,_err );
     return false;
   } else {
     return true;
@@ -40,30 +42,31 @@ function checkRegExp(o, regexp, _err){
 }
 
 function updateTips(errElem,text){
-      $('#'+errElem)
+      $(errElem)
         .text( text )
         .addClass( "ui-state-highlight" );
       setTimeout(function() {
-        $('#'+errElem).removeClass( "ui-state-highlight", 1500 );
+        $(errElem).removeClass( "ui-state-highlight", 1500 );
       }, 500 );
     }
 
-function validateField(inputObj){ /*inputObj è sempre l'array multidim derivante dal documentReady */
+function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
       var username  = $('#'+inputObj.id).val();
-      // return checkLength(inputObj,"username",3,16) && checkRegExp();
-      console.log(checkLength(inputObj.id,"username",3,16));
-      //console.log(checkRegExp($('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter."));
+      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
       break;
     case("regEml"): 
-      var email = $("#regEml").val();
+      var email = $('#'+inputObj.id).val();
+      return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,));
       break;
     case("regPwd"): 
-      var password  = $("#regPwd").val();
+      var password  = $('#'+inputObj.id).val();
+      return(true);
       break;
     case("pwdC"):
-      var passwordC = $("#pwdC").val();
+      var passwordC = $('#'+inputObj.id).val();
+      return(true);
       break;
   }
 }
@@ -88,7 +91,6 @@ $( function() {
     var dialog, form,
  
       // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-      emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
       name = $( "#name" ),
       email = $( "#email" ),
       password = $( "#password" ),
