@@ -19,6 +19,12 @@ var usrRegex  = /^[a-zA-Z0-9]/;
   Ma a sto punto faccio ajax direttamente in php (?).
 */
 
+function resetField(field) {
+  $(field).val(function() {
+      return this.defaultValue;
+  });
+}
+
 /*Ok la checkLength funziona*/
 function checkLength(obj,field,min,max){
   if ( $(obj).val().length > max || $(obj).val().length < min ) {
@@ -53,20 +59,20 @@ function updateTips(errElem,text){
 function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
-      var username  = $('#'+inputObj.id).val();
       return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
       break;
     case("regEml"): 
-      var email = $('#'+inputObj.id).val();
-      return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,));
+      console.log(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
+      return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
       break;
     case("regPwd"): 
-      var password  = $('#'+inputObj.id).val();
-      return(true);
+      resetField("#pwdC");/*resetta il campo di conferma della password*/
+      console.log(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
+      return(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       break;
     case("pwdC"):
-      var passwordC = $('#'+inputObj.id).val();
-      return(true);
+      console.log($("#regPwd").val()===$("#pwdC").val());
+      return($("#regPwd").val()===$("#pwdC").val());
       break;
   }
 }
