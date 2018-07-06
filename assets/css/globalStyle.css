@@ -17,7 +17,22 @@
 /*.grid_container > div:nth-child(odd){
     background:#ddd;
 }*//*
-.slideshow{
+.slideshow{  $(inputId[0]).change(function(){
+    var username  = $(inputId[0]).val();
+    console.log(username);
+  });
+  $(inputId[1]).change(function(){
+    var email  = $("#regEml").val();
+    console.log(email);
+  });
+  $(inputId[2]).change(function(){
+    var password  = $("#regPwd").val();
+    console.log(password);
+  });
+  $(inputId[3]).change(function(){
+    var passwordC = $("#pwdC").val();
+    console.log(passwordC);
+  });
     grid-column:1/14;
     grid-row:1/27;
 }

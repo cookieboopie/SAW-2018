@@ -12,13 +12,62 @@ var allValid;
   ->dato che qua non posso fare escape (mi serve conn. al db e php), come gestirò il php? cioò come farò il php che dovrà gestirmi il mysqli_real_escape_string
   Io so verificare i campi in php, ma non in js, quindi devo studiarmi un po' il linguaggio e le cose che devo fare.
   Da validare: 1)USERNAME, 2)EMAIL, 3)PASSWORD, 4)CONFERMA PASSWORD(just to control che deve essere uguale all'altra). 
-  1)-required; -minimo 3/4caratteri; -regex per sintassi; -ajax per nome in uso -> ajax posso farlo in jquery!!.
+  1)-required; -minimo 3/4caratteri; -regex per sintassi; -ajax per nome in uso -> ajax posso farlo in jquery!!. 
   2)-required; -regex per sintassi; -ajax per email già in uso.
   3)-required; -minimo tot caratteri; (-almeno carattere speciale e/o numero).
+  Ma a sto punto faccio ajax direttamente in php (?).
 */
-function validateFields(formId) {
-  
+
+function checkLength(o,name,min,max){
+  if ( o.val().length > max || o.val().length < min ) {
+    o.addClass( "ui-state-error" );
+    updateTips($("#"+o.id+"_err"),"Length of " + n + " must be between " +
+      min + " and " + max + "." );
+    return false;
+  } else {
+    return true;
+  }
 }
+
+function checkRegExp(o, regexp, _err){
+  if ( !( regexp.test( o.val() ) ) ) {
+    o.addClass( "ui-state-error" ); //obv devo farmi le classi ui
+    updateTips( n );
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function updateTips(errElem,text){
+      errElem
+        .text( text )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        errElem.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+
+function validateField(inputObj){
+  switch(inputObj.id){
+    case("#regUsr"): 
+      
+      return checkLength(inputObj,"username",3,16) && checkRegExp();
+      break;
+    case("#regEml"): 
+      break;
+    case("#regPwd"): 
+      break;
+    case("#pwdC"):
+      break;
+  }
+}
+
+/*
+function validateFields(inputId) {
+
+}
+*/
 
 
 
@@ -70,7 +119,8 @@ $( function() {
         return true;
       }
     }
- 
+  });
+ /*
     function addUser() {
       var valid = true;
       allFields.removeClass( "ui-state-error" );
@@ -120,7 +170,7 @@ $( function() {
       dialog.dialog( "open" );
     });
   } );
-
+*/
 $('document').ready(function() {
     $('#regSubmit').on("submit", function(e) {
         e.preventDefault();
@@ -141,12 +191,25 @@ $('document').ready(function() {
         } else {
             
         }e
-    }); 
-    
-    $('#regForm input').on("change", function() {
-        validateFields();
     });
-    
+
+    $("#regForm input").on("change",function(){
+      validateField(this);
+    });
+
+    /*Le 2 bellissime robette qui sotto mi prendono tutti i campi dei form e li buttano dentro alla validateFields, ogni volta che si verifica un change.
+    Sta cosa mi sembra un po' una cazzata. O forse no, cioè dipende da com'è la validateFields, ma non è che ogni volta che un campo cambia devo ricontrollare tutti gli altri, che sono rimasti gli stessi.
+     */
+
+    /*
+    $('#regForm input').on("change", function() {
+        validateFields($('#regForm input'));
+    });
+
+    $('#logForm input').on("change", function() {
+      validateFields($('#logForm input'));
+  });
+    */
     $(".close").click(function() {
         $(".wrapper").hide();
         document.getElementById("regForm").reset();
@@ -171,6 +234,7 @@ $('document').ready(function() {
         $("#logForm").show();
         $("#regForm").hide();
     })
+
 
 });
 

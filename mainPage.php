@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<header>
+<head>
 <title>NotTooBed | Homepage</title>
 
 <?php require 'indexHeader.php'; ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<header>
+<head>
 <title>NotTooBed | Registration</title>
 
 <?php require 'indexHeader.php'; ?>
@@ -22,7 +22,7 @@
             <div class="closeContainer">
                 <div class="close" style="cursor: pointer">&times</div>
             </div>
-            <form id="regForm">
+            <form id="regForm" autocomplete="off">
                 <label for="regUsr">Username </label>
                 <input type="text" id="regUsr" name="regUsr">
                 <label for="regEml">E-mail </label>
@@ -34,11 +34,11 @@
                 <input type="submit" id="regSubmit" value="Crea Account">
                 <span id="inputError"></span>
             </form>
-            <form id="logForm">
+            <form id="logForm" autocomplete="off">
                 <label for="logUsr">Username </label>
                 <input type="text" id="logUsr" name="logUsr">
                 <label for="logPw">Password </label>
-                <input type="text" id="logPw" name="logPw">
+                <input type="text" id="logPwd" name="logPw">
                 <input type="submit" id="logSubmit" value="Login">
             </form>
         </div>
