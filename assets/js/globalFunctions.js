@@ -4,6 +4,7 @@ var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{
 var allValid;
 var pwdRegex  = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{5,}$/ /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola*/
 var usrRegex  = /^[a-zA-Z0-9]/;
+var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]$/;
 
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
@@ -17,6 +18,14 @@ var usrRegex  = /^[a-zA-Z0-9]/;
   2)-required; -regex per sintassi; -ajax per email già in uso.
   3)-required; -minimo tot caratteri; (-almeno carattere speciale e/o numero).
   Ma a sto punto faccio ajax direttamente in php (?).
+  aggiungere nome e cognome nel regForm.
+  nome e congome è strict solo char (occhio alle lingue strane) [a-zA-Z].
+  FACEBOOK usa le seguenti limitazioni (robe non utilizzabili): 
+    -Symbols, numbers, unusual capitalization, repeating characters or punctuation
+    -Characters from multiple languages
+    -Titles of any kind (ex: professional, religious, etc)
+    -Words, phrases, or nicknames in place of a middle name
+    -Offensive or suggestive content of any kind.
 */
 
 function resetField(field) {
@@ -40,16 +49,16 @@ function checkLength(obj,field,min,max){
 function checkRegExp(obj, regexp, _err){
   if ( !( regexp.test( $(obj).val() ) ) ) {
     $(obj).addClass( "ui-state-error" ); //obv devo farmi le classi ui per il display di errori
-    updateTips(obj,_err );
+    updateTips(obj+"_err",_errText );
     return false;
   } else {
     return true;
   }
 }
 
-function updateTips(errElem,text){
+function updateTips(errElem,_errText){
       $(errElem)
-        .text( text )
+        .text(_errText)
         .addClass( "ui-state-highlight" );
       setTimeout(function() {
         $(errElem).removeClass( "ui-state-highlight", 1500 );
@@ -58,32 +67,34 @@ function updateTips(errElem,text){
 
 function validateField(inputObj){ 
   switch(inputObj.id){
+    /*
+      SWITCH FOR FIRSTNAME AND LASTNAME ---> non so se farlo o dare la possibilità di mettere nome e cognome nel modifica profilo
+    case("name"):
+      return (checkLength(('#'+inputObj.id),"firstname",2,35) && checkRegExp('#'+inputObj.id,nameRegex,"Firstname may consist of every international character, except for chinese's ones and cannot contain symbols"));
+      break;
+    case("surname"):
+      return(checkLength(('#'+inputObj.id),"lastname",2,35) && checkRegExp('#'+inputObj.id,nameRegex,"Lastname may consist of every international character, except for chinese's ones and cannot contain symbols"));
+      break;*/
     case("regUsr"): 
       return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
       break;
     case("regEml"): 
-      console.log(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
       break;
     case("regPwd"): 
       resetField("#pwdC");/*resetta il campo di conferma della password*/
-      console.log(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       return(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       break;
     case("pwdC"):
-      console.log($("#regPwd").val()===$("#pwdC").val());
       return($("#regPwd").val()===$("#pwdC").val());
       break;
   }
 }
 
-/*
+/*Funzione per validare tutti i campi quando si preme il tasto 'submit'*/
 function validateFields(inputId) {
 
 }
-*/
-
-
 
 function manageResults(someData) {
     if('error' in someData) {
@@ -95,13 +106,11 @@ function manageResults(someData) {
 
 $( function() {
     var dialog, form,
- 
-      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-      name = $( "#name" ),
-      email = $( "#email" ),
-      password = $( "#password" ),
-      allFields = $( [] ).add( name ).add( email ).add( password ),
-      tips = $( ".validateTips" );
+    name = $( "#name" ),
+    email = $( "#email" ),
+    password = $( "#password" ),
+    allFields = $( [] ).add( name ).add( email ).add( password ),
+    tips = $( ".validateTips" );
  
     function updateTips( t ) {
       tips
@@ -111,18 +120,7 @@ $( function() {
         tips.removeClass( "ui-state-highlight", 1500 );
       }, 500 );
     }
- /*
-    function checkLength( o, n, min, max ) {
-      if ( o.val().length > max || o.val().length < min ) {
-        o.addClass( "ui-state-error" );
-        updateTips( "Length of " + n + " must be between " +
-          min + " and " + max + "." );
-        return false;
-      } else {
-        return true;
-      }
-    }
- */
+
     function checkRegexp( o, regexp, n ) {
       if ( !( regexp.test( o.val() ) ) ) {
         o.addClass( "ui-state-error" );
@@ -133,57 +131,7 @@ $( function() {
       }
     }
   });
- /*
-    function addUser() {
-      var valid = true;
-      allFields.removeClass( "ui-state-error" );
- 
-      valid = valid && checkLength( name, "username", 3, 16 );
-      valid = valid && checkLength( email, "email", 6, 80 );
-      valid = valid && checkLength( password, "password", 5, 16 );
- 
-      valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-      valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
-      valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
- 
-      if ( valid ) {
-        $( "#users tbody" ).append( "<tr>" +
-          "<td>" + name.val() + "</td>" +
-          "<td>" + email.val() + "</td>" +
-          "<td>" + password.val() + "</td>" +
-        "</tr>" );
-        dialog.dialog( "close" );
-      }
-      return valid;
-    }
- 
-    dialog = $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Create an account": addUser,
-        Cancel: function() {
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
-        form[ 0 ].reset();
-        allFields.removeClass( "ui-state-error" );
-      }
-    });
- 
-    form = dialog.find( "form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addUser();
-    });
- 
-    $( "#create-user" ).button().on( "click", function() {
-      dialog.dialog( "open" );
-    });
-  } );
-*/
+
 $('document').ready(function() {
     $('#regSubmit').on("submit", function(e) {
         e.preventDefault();
@@ -206,23 +154,10 @@ $('document').ready(function() {
         }e
     });
 
-    $("#regForm input").on("change",function(){ /*this ha valore tipo 'input id="regUsr" name="regUsr" type="text">' ovvero un [object Object] (array multidim)*/
+    $("#regForm input").on("change",function(){ 
       validateField(this);
     });
 
-    /*Le 2 bellissime robette qui sotto mi prendono tutti i campi dei form e li buttano dentro alla validateFields, ogni volta che si verifica un change.
-    Sta cosa mi sembra un po' una cazzata. O forse no, cioè dipende da com'è la validateFields, ma non è che ogni volta che un campo cambia devo ricontrollare tutti gli altri, che sono rimasti gli stessi.
-     */
-
-    /*
-    $('#regForm input').on("change", function() {
-        validateFields($('#regForm input'));
-    });
-
-    $('#logForm input').on("change", function() {
-      validateFields($('#logForm input'));
-  });
-    */
     $(".close").click(function() {
         $(".wrapper").hide();
         document.getElementById("regForm").reset();
