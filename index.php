@@ -23,16 +23,16 @@
                 <div class="close" style="cursor: pointer">&times</div>
             </div>
             <form id="regForm" autocomplete="off">
-                <label for="regUsr">Username </label>
+                <label for="regUsr">Username </label><span id="regUsr_err"></span>
                 <input type="text" id="regUsr" name="regUsr">
-                <label for="regEml">E-mail </label>
+                <label for="regEml">E-mail </label><span id="regEml_err"></span>
                 <input type="text" id="regEml" name="regEml">
-                <label for="regPwd">Password </label>
+                <label for="regPwd">Password </label><span id="regPwd_err"></span>
                 <input type="password" id="regPwd" name="regPwd">
-                <label for="pwdC">Conferma Password </label>
+                <label for="pwdC">Conferma Password </label><span id="pwdC_err"></span>
                 <input type="password" id="pwdC" name="pwdC">
                 <input type="submit" id="regSubmit" value="Crea Account">
-                <span id="inputError"></span>
+                
             </form>
             <form id="logForm" autocomplete="off">
                 <label for="logUsr">Username </label>

@@ -1,5 +1,3 @@
-var regRegex = [];
-
 var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var allValid;
 var pwdRegex  = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{5,}$/ /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola*/
@@ -20,7 +18,7 @@ var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋ�
   Ma a sto punto faccio ajax direttamente in php (?).
   aggiungere nome e cognome nel regForm.
   nome e congome è strict solo char (occhio alle lingue strane) [a-zA-Z].
-  FACEBOOK usa le seguenti limitazioni (robe non utilizzabili): 
+  FACEBOOK usa le seguenti limitazioni (robe non utilizzabili nei nomi): 
     -Symbols, numbers, unusual capitalization, repeating characters or punctuation
     -Characters from multiple languages
     -Titles of any kind (ex: professional, religious, etc)
@@ -28,13 +26,24 @@ var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋ�
     -Offensive or suggestive content of any kind.
 */
 
+/*
+TO-DO: Allora a questo punto devo controllare che l'updateTips funzioni e impostare le classi UI. da creare spazio nel formi per l'highlight e l'error.
+*/
+
+function passwordConfirm(pwd,pwdC){
+  if($(pwd).val()===$(pwdC).val())
+    return  true;
+  else 
+    updateTips("#pwdC_err","password doesn't match");
+    return  false;
+};
+
 function resetField(field) {
   $(field).val(function() {
       return this.defaultValue;
   });
-}
+};
 
-/*Ok la checkLength funziona*/
 function checkLength(obj,field,min,max){
   if ( $(obj).val().length > max || $(obj).val().length < min ) {
     $(obj).addClass( "ui-state-error" );
@@ -44,26 +53,29 @@ function checkLength(obj,field,min,max){
   } else {
     return true;
   }
-}
+};
 
-function checkRegExp(obj, regexp, _err){
+function checkRegExp(obj, regexp, _errText){
   if ( !( regexp.test( $(obj).val() ) ) ) {
     $(obj).addClass( "ui-state-error" ); //obv devo farmi le classi ui per il display di errori
     updateTips(obj+"_err",_errText );
     return false;
   } else {
+    $(obj+"_err").text("");
     return true;
   }
-}
+};
 
 function updateTips(errElem,_errText){
       $(errElem)
         .text(_errText)
-        .addClass( "ui-state-highlight" );
+        .addClass("ui-state-highlight");
+      console.log("errElem: "+errElem);
+      console.log("errText: "+_errText);
       setTimeout(function() {
         $(errElem).removeClass( "ui-state-highlight", 1500 );
       }, 500 );
-    }
+    };
 
 function validateField(inputObj){ 
   switch(inputObj.id){
@@ -76,7 +88,7 @@ function validateField(inputObj){
       return(checkLength(('#'+inputObj.id),"lastname",2,35) && checkRegExp('#'+inputObj.id,nameRegex,"Lastname may consist of every international character, except for chinese's ones and cannot contain symbols"));
       break;*/
     case("regUsr"): 
-      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
+      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9,'_' and must start with a letter");
       break;
     case("regEml"): 
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
@@ -86,7 +98,7 @@ function validateField(inputObj){
       return(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       break;
     case("pwdC"):
-      return($("#regPwd").val()===$("#pwdC").val());
+      return(passwordConfirm("#regPwd","#pwdC"));
       break;
   }
 }
