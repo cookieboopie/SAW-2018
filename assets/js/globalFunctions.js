@@ -106,26 +106,6 @@ function validateField(inputObj){
 }
 
 $('document').ready(function() {
-    $('#regSubmit').on("submit", function(e) {
-        e.preventDefault();
-    
-        if(allValid) {
-            $.ajax({
-                url: 'renatoReg.php',
-                type: 'POST',
-                dataType: 'JSON',
-                error: function(XHR, ajaxOptions, thrownError) {
-                   $('#inputError').html('<p>An error has occurred!</p>'); /* <?php echo htmlspecialchars($infoAd); ?> 
-                                                                              Nel PHP crei un oggetto con new stdClass() e gli inserisci campi con -> e poi, prima di spedirlo in echo, fai json_encode($returnObj) */
-                },
-                success: function(returnData) {
-                    manageResults(returnData);
-                }
-            });
-        } else {
-            
-        }e
-    });
 
     $("#regForm input").on("change",function(){ 
       var id  = this.id;
