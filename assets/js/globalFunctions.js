@@ -90,7 +90,7 @@ function validateLog(input) {
 function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
-      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9,'_' and must start with a letter");
+      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_])+$/i,"Username may consist of a-z, 0-9,'_' and must start with a letter");
       break;
     case("regEml"): 
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
@@ -118,6 +118,7 @@ $('document').ready(function() {
               robe: $('#'+this.id).val()
             },
             success: function(result){
+              
               var obj = JSON.parse(result);
               if(obj.found==="1"){
                 $("#"+id).addClass( "ui-state-error" );

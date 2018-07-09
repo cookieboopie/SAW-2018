@@ -4,8 +4,13 @@
     $password = "Alakazam@123";
     $dbname = "Accounts";
     $conn = mysqli_connect($servername, $username, $password, $dbname);
-    $data   =   trim($_POST["robe"], " ");
+    $data   =   $_POST["robe"];
+    
     if( isset($data) && !empty($data) ){
+        //$data=  mysql_real_escape_string($data);
+        
+        $data   =   trim($data, " ");
+        $data = preg_replace('/\s+/', '', $data);
         $myJSON = new stdClass();
         $query = mysqli_query($conn,"SELECT * FROM Users WHERE USERNAME =   '$data' ");
         $find = mysqli_num_rows($query);
