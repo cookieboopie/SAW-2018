@@ -35,12 +35,16 @@ function pollo(id){
 }
 
 function passwordConfirm(pwd,pwdC){
-  if($(pwd).val()===$(pwdC).val())
+  if($(pwd).val()===$(pwdC).val()){
+    $("#pwdC_err").text("");
+    $("#pwdC").removeClass("ui-state-error");
     return  true;
-  else 
+  }
+  else {
     $(pwdC).addClass("ui-state-error");
     updateTips("#pwdC_err","password doesn't match");
     return  false;
+  }
 };
 
 function resetField(field) {
@@ -66,6 +70,7 @@ function checkRegExp(obj, regexp, _errText){
     updateTips(obj+"_err",_errText );
     return false;
   } else {
+    $(obj).removeClass("ui-state-error");
     $(obj+"_err").text("");
     return true;
   }
@@ -120,34 +125,6 @@ function manageResults(someData) {
         window.location.replace('mainPage.php?getVar=welcomeMsg');
     }
 }
-
-$( function() {
-    var dialog, form,
-    name = $( "#name" ),
-    email = $( "#email" ),
-    password = $( "#password" ),
-    allFields = $( [] ).add( name ).add( email ).add( password ),
-    tips = $( ".validateTips" );
- 
-    function updateTips( t ) {
-      tips
-        .text( t )
-        .addClass( "ui-state-highlight" );
-      setTimeout(function() {
-        tips.removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
-    }
-
-    function checkRegexp( o, regexp, n ) {
-      if ( !( regexp.test( o.val() ) ) ) {
-        o.addClass( "ui-state-error" );
-        updateTips( n );
-        return false;
-      } else {
-        return true;
-      }
-    }
-  });
 
 $('document').ready(function() {
     $('#regSubmit').on("submit", function(e) {
