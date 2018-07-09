@@ -15,4 +15,3 @@
         mysqli_close($con);
     }
 ?>
-NON SEI UP TO DATE
