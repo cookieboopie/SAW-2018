@@ -24,11 +24,12 @@ var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋ�
     -Titles of any kind (ex: professional, religious, etc)
     -Words, phrases, or nicknames in place of a middle name
     -Offensive or suggestive content of any kind.
+
+
+  Per il LOGIN form, imposto due controlli base base sulla lunghezza dei campi, e poi controllo che sia in database.
+  per il display error, basta mettere "username/password errato in caso di lunghezza errata."
 */
 
-/*
-TO-DO: Allora a questo punto devo controllare che l'updateTips funzioni e impostare le classi UI. da creare spazio nel formi per l'highlight e l'error.
-*/
 
 function pollo(id){
 
@@ -110,6 +111,11 @@ function validateField(inputObj){
     case("pwdC"):
       return(passwordConfirm("#regPwd","#pwdC"));
       break;
+    case("logUsr"):
+    ;
+    case("logPwd"):
+    ;
+    
   }
 }
 
