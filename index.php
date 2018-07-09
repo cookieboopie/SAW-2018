@@ -33,12 +33,12 @@
                 <input type="password" id="pwdC" name="pwdC">
                 <input type="submit" id="regSubmit" value="Crea Account">
             </form>
-            <form id="logForm" autocomplete="off">
+            <form id="logForm" autocomplete="off" > 
                 <label for="logUsr">Username </label><span id="logUsr_err"></span>
                 <input type="text" id="logUsr" name="logUsr">
                 <label for="logPw">Password </label><span id="logPwd_err"></span>
                 <input type="text" id="logPwd" name="logPw">
-                <input type="submit" id="logSubmit" value="Login">
+                <input type="button" id="logSubmit" value="Login">
             </form>
         </div>
     </div>

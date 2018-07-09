@@ -31,10 +31,6 @@ var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋ�
 */
 
 
-function pollo(id){
-
-}
-
 function passwordConfirm(pwd,pwdC){
   if($(pwd).val()===$(pwdC).val()){
     $("#pwdC_err").text("");
@@ -81,23 +77,18 @@ function updateTips(errElem,_errText){
       $(errElem)
         .text(_errText)
         .addClass("ui-state-highlight");
-      console.log("errElem: "+errElem);
-      console.log("errText: "+_errText);
       setTimeout(function() {
         $(errElem).removeClass( "ui-state-highlight", 1500 );
       }, 800 );
     };
 
+/*Funzione per validare tutti i campi del logForm quando si preme il tasto 'submit'*/
+function validateLog(input) {
+
+}
+
 function validateField(inputObj){ 
   switch(inputObj.id){
-    /*
-      SWITCH FOR FIRSTNAME AND LASTNAME ---> non so se farlo o dare la possibilità di mettere nome e cognome nel modifica profilo
-    case("name"):
-      return (checkLength(('#'+inputObj.id),"firstname",2,35) && checkRegExp('#'+inputObj.id,nameRegex,"Firstname may consist of every international character, except for chinese's ones and cannot contain symbols"));
-      break;
-    case("surname"):
-      return(checkLength(('#'+inputObj.id),"lastname",2,35) && checkRegExp('#'+inputObj.id,nameRegex,"Lastname may consist of every international character, except for chinese's ones and cannot contain symbols"));
-      break;*/
     case("regUsr"): 
       return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_\s])+$/i,"Username may consist of a-z, 0-9,'_' and must start with a letter");
       break;
@@ -112,11 +103,6 @@ function validateField(inputObj){
       return(passwordConfirm("#regPwd","#pwdC"));
       break;
   }
-}
-
-/*Funzione per validare tutti i campi quando si preme il tasto 'submit'*/
-function validateFields(formId) {
-
 }
 
 $('document').ready(function() {
@@ -142,19 +128,33 @@ $('document').ready(function() {
     });
 
     $("#regForm input").on("change",function(){ 
+      var id  = this.id;
       if(validateField(this)  &&  (this.id!=="pwdC" || this.id!=="regPwd"))
         {
-          $.ajax( "check.php", { data: $("#"+this.id).val() }, function (response){
-            if(response=='1'){
-             //do 1
-            }
-            else if(response=='0'){
-              //do 0
+          $.ajax({
+            type: "POST",
+            url: "check.php",
+            data: {
+              robe: $('#'+this.id).val()
+            },
+            success: function(result){
+              var obj = JSON.parse(result);
+              if(obj.found==="1"){
+                $("#"+id).addClass( "ui-state-error" );
+                updateTips('#'+id+"_err","Username already taken!");
+              }
+              else if(obj.found==="ko"){
+              $("#"+id).addClass( "ui-state-error" );
+              updateTips('#'+id+"_err","Internal error occurred. Change username");
+              }
             }
           });
         }
     });
-    ;
+    $("#logSubmit").click(function(){
+      validateLog($("#logForm input"));
+      submitData();
+    });
 
     $(".close").click(function() {
         $(".ui-state-error").removeClass();
@@ -188,8 +188,9 @@ $('document').ready(function() {
 
 
 
-/* Nelle query SQL se puoi usa i Prepared Statements in INSERT e in SELECT. Ma se sono query piccole, sono più lenti che usare il mysqli_query o $sqliObj->query, perciò magari si possono invece usare questi due. In questo caso fai sempre la trim degli input, e poi se sono Integer per validarli bast il cast (int), mentre se sono di tipo String usa mysqli_real_escape_string o $sqliObj->real_escape_string e ricordati di passarli alle query come stringhe, cioè usa gli apici ''.
-   Esempio di SELECT: $sqlQuery = "SELECT * FROM Table WHERE someField='" . $someVar "'"; */
+/* Nelle query SQL se si può si usano i Prepared Statements in INSERT e in SELECT. Ma se sono query piccole, sono più lenti che usare il mysqli_query o $sqliObj->query, perciò magari si possono invece usare questi due. In questo caso faccio sempre la trim degli input, e poi se sono Integer per validarli bast il cast (int), mentre se sono di tipo String uso mysqli_real_escape_string o $sqliObj->real_escape_string e bisogna ricordarsi di passarli alle query come stringhe,cioè di usare gli apici ''.
+   
+  Esempio di SELECT: $sqlQuery = "SELECT * FROM Table WHERE someField='" . $someVar "'"; */
 
-/* Quando tu usi in PHP la funzione header(), che sia per veri header della chiamata o che sia per fare un redirect con header('Location: URL'), non ci deve essere niente in output prima. Niente HTML e niente righe vuote. Poichè appena c'è un output gli header vengono impacchettati, inviati e non sono più modificabili. Perciò usi ob_start e ob_flush / ob_end_flush per mandare tutto al buffer e poi inviare tutti i dati insieme. Esiste anche ob_end_clean che butta via tutto quello che c'è nel buffer ed è utile se tu vuoi evitare echo indesiderati prima di quelli che ti aspetti. */
+/* Quando in PHP si usa la funzione header(), che sia per veri header della chiamata o che sia per fare un redirect con header('Location: URL'), non ci deve essere niente in output prima. Niente HTML e niente righe vuote. Poichè appena c'è un output gli header vengono impacchettati, inviati e non sono più modificabili. Perciò si usa ob_start e ob_flush / ob_end_flush per mandare tutto al buffer e poi inviare tutti i dati insieme. Esiste anche ob_end_clean che butta via tutto quello che c'è nel buffer ed è utile se vuoi evitare echo indesiderati prima di quelli che ti aspetti. */
 
