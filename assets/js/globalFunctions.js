@@ -106,30 +106,17 @@ function validateField(inputObj){
       break;
     case("regPwd"): 
       resetField("#pwdC");/*resetta il campo di conferma della password*/
-      return(checkLength(('#'+inputObj.id),"password",5,16)  &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
+      return(checkLength(('#'+inputObj.id),"password",5,16) &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       break;
     case("pwdC"):
       return(passwordConfirm("#regPwd","#pwdC"));
       break;
-    case("logUsr"):
-    ;
-    case("logPwd"):
-    ;
-    
   }
 }
 
 /*Funzione per validare tutti i campi quando si preme il tasto 'submit'*/
-function validateFields(inputId) {
+function validateFields(formId) {
 
-}
-
-function manageResults(someData) {
-    if('error' in someData) {
-        /* Cose simili a validateFields per mostrare gli errori */
-    } else {
-        window.location.replace('mainPage.php?getVar=welcomeMsg');
-    }
 }
 
 $('document').ready(function() {
@@ -166,6 +153,11 @@ $('document').ready(function() {
             }
           });
         }
+    });
+    $("#logForm input").on("change",function(){
+      if(validateField(this)){
+        $.ajax(/*robe*/)
+      }
     });
 
 

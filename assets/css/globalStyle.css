@@ -188,6 +188,18 @@ body{
     font: verdana;
     font-size:12px;
 }
+#logUsr_err{
+    display:inline-block;
+    margin-left:45px;
+    font: verdana;
+    font-size:12px;
+}
+#logPwd_err{
+    display:inline-block;
+    margin-left:45px;
+    font: verdana;
+    font-size:12px;
+}
 .ui-state-error{
     background-color: rgb(255, 57, 57);
     border: 1px solid rgb(255, 0, 0);
