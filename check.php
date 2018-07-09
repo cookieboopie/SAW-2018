@@ -12,6 +12,6 @@
         $query = mysqli_query($conn,"SELECT * FROM Users WHERE username =   '$data' ");
         $find = mysqli_num_rows($query);
         echo $find;
-        mysqli_close($con);
+        mysqli_close($conn);
     }
 ?>
