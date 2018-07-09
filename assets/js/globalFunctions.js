@@ -154,12 +154,7 @@ $('document').ready(function() {
           });
         }
     });
-    $("#logForm input").on("change",function(){
-      if(validateField(this)){
-        $.ajax(/*robe*/)
-      }
-    });
-
+    ;
 
     $(".close").click(function() {
         $(".ui-state-error").removeClass();
