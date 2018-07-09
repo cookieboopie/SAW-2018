@@ -94,6 +94,7 @@
 
 }*/
 input{
+    
     width:50%;
     display: block;
     margin: 15px auto;
@@ -187,6 +188,12 @@ body{
     font: verdana;
     font-size:12px;
 }
+.ui-state-error{
+    background-color: rgb(255, 57, 57);
+    border: 1px solid rgb(255, 0, 0);
+}
 .ui-state-highlight{
-    color: red;
+    border: 1px solid #dad55e;
+	background: #fffa90;
+	color: #777620;
 }

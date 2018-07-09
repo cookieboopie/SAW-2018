@@ -30,10 +30,15 @@ var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋ�
 TO-DO: Allora a questo punto devo controllare che l'updateTips funzioni e impostare le classi UI. da creare spazio nel formi per l'highlight e l'error.
 */
 
+function pollo(id){
+
+}
+
 function passwordConfirm(pwd,pwdC){
   if($(pwd).val()===$(pwdC).val())
     return  true;
   else 
+    $(pwdC).addClass("ui-state-error");
     updateTips("#pwdC_err","password doesn't match");
     return  false;
 };
@@ -46,7 +51,7 @@ function resetField(field) {
 
 function checkLength(obj,field,min,max){
   if ( $(obj).val().length > max || $(obj).val().length < min ) {
-    $(obj).addClass( "ui-state-error" );
+    $(obj).addClass("ui-state-error");
     updateTips((obj+"_err"),"Length of " + field + " must be between " +
       min + " and " + max + "." );
     return false;
@@ -74,7 +79,7 @@ function updateTips(errElem,_errText){
       console.log("errText: "+_errText);
       setTimeout(function() {
         $(errElem).removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
+      }, 800 );
     };
 
 function validateField(inputObj){ 
@@ -167,10 +172,23 @@ $('document').ready(function() {
     });
 
     $("#regForm input").on("change",function(){ 
-      validateField(this);
+      if(validateField(this)  &&  (this.id!=="pwdC" || this.id!=="regPwd"))
+        {
+          $.ajax( "check.php", { data: $("#"+this.id).val() }, function (response){
+            if(response=='1'){
+             //do 1
+            }
+            else if(response=='0'){
+              //do 0
+            }
+          });
+        }
     });
 
+
     $(".close").click(function() {
+        $(".ui-state-error").removeClass();
+        $("[id$='_err']").text("");
         $(".wrapper").hide();
         document.getElementById("regForm").reset();
         document.getElementById("logForm").reset();
