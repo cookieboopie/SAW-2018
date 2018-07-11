@@ -1,14 +1,14 @@
 <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "Alakazam@123";
-    $dbname = "Accounts";
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    $data   =   $_POST["robe"];
+        $servername = "localhost";
+        $username = "root";
+        $password = "Alakazam@123";
+        $dbname = "Accounts";
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+        $data   =   $_POST["registerInput"];
+        $username=  $_POST["loginInputUsr"];
+        $password=  $_POST["loginInputPwd"];
     
     if( isset($data) && !empty($data) ){
-        //$data=  mysql_real_escape_string($data);
-        
         $data   =   trim($data, " ");
         $data = preg_replace('/\s+/', '', $data);
         $myJSON = new stdClass();
@@ -26,5 +26,18 @@
         echo($JSON);
         mysqli_close($conn);
     }
-    mysqli_close($conn);
+    else
+        mysqli_close($conn);
+
+    if( isset($username) && !empty($username) ){
+        $username   =   trim($username, " ");
+        $username = preg_replace('/\s+/', '', $username);
+        $myJSON = new stdClass();
+        //$query = mysqli_query($conn,"SELECT * FROM Users WHERE USERNAME =   '$username' ");
+        //Da fare query che trovi lo username e da questo la password, poi hashi la pw e cerchi la corrispondenza.
+        mysqli_close($conn);
+    }
+    else
+        mysqli_close($conn);
+    
 ?>

@@ -1,7 +1,7 @@
 var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var allValid;
-var pwdRegex  = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{5,}$/ /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola*/
-var usrRegex  = /^[a-zA-Z0-9]/;
+var pwdRegex  = /^(?=.*\d)(?=.*[a-zA-Z])[A-Za-z\d$@$!%*#?&£.,]{5,}$/ ; /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola/maiusc*/
+var usrRegex  = /^[a-z]([0-9a-z_])+$/i;
 var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]$/;
 
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
@@ -84,7 +84,59 @@ function updateTips(errElem,_errText){
 
 /*Funzione per validare tutti i campi del logForm quando si preme il tasto 'submit'*/
 function validateLog(input) {
+  //check length username
+  if( ($('#logUsr').val().length  > 16)  ||  ($('#logUsr').val().length < 3) ){
+    //classe ui-logErr-state-error
+    return false;
+  }
+  else{
+    //check su regExp username
+    if( !(usrRegex.test( $('#logUsr').val() )) ){
+      //classe ui-logErr-state-error
+      return false;
+    }
+    else{
+      //check length password
+      if( $('#logPwd').val().length  > 16  ||  $('#logPwd').val().length  < 3 ){
+        //classe ui-logErr-state-error
+        return false;
+      }
+      else{
+        //check regExp password
+        if( !(pwdRegex.test( $('#logPwd').val() )) ){
+          //classe ui-logErr-state-error
+          return false;
+        }
+        else
+          return true;
+      }
+    }
 
+  }
+  
+
+
+  /*
+  if( ($('#logUsr').val().length !== 0) ){
+    if(checkLength(('#logUsr'),"username",3,16)  &&  checkRegExp(('#logUsr'),/^[a-z]([0-9a-z_])+$/i,"Username not found!")){
+      //qua convalido password
+      return( checkLength(('#logPwd'),"password",5,16)  &&  checkRegExp(('#logPwd'),pwdRegex,"Password not found!") )
+    }
+    else{
+      updateTips('#logPwd_err',"Insert username correctly!")
+      $('#logUsr').addClass("ui-state-error");
+      $('#logPwd').addClass("ui-state-error");
+      return false;
+    }
+  }
+  else{
+    updateTips('#logUsr_err',"Length of username must be between 3 and 16!");
+    updateTips('#logPwd_err',"Insert username correctly!")
+    $('#logUsr').addClass("ui-state-error");
+    $('#logPwd').addClass("ui-state-error");
+    return false;
+  }
+*/
 }
 
 function validateField(inputObj){ 
@@ -115,7 +167,7 @@ $('document').ready(function() {
             type: "POST",
             url: "check.php",
             data: {
-              robe: $('#'+this.id).val()
+              registerInput: $('#'+this.id).val()
             },
             success: function(result){
               
@@ -133,8 +185,30 @@ $('document').ready(function() {
         }
     });
     $("#logSubmit").click(function(){
-      validateLog($("#logForm input"));
-      submitData();
+      $('#logUsr').removeClass("ui-state-error");
+      $('#logPwd').removeClass("ui-state-error");
+      
+      if( validateLog($("#logForm input"))  ){
+        //submit in ajax
+        $.ajax({
+          type: "POST",
+          url: "check.php",
+          data: {
+            loginInputUsr:  $('#logUsr').val(),
+            loginInputPwd:  $('#logPwd').val()
+          },
+          success: function(result){
+            
+            var obj = JSON.parse(result);
+            
+          }
+        });
+      }
+      else{
+        $('#logErr').addClass( "scritta da mettere nello span sotto a tutto" );
+        $('#logUsr').addClass("ui-state-error");
+        $('#logPwd').addClass("ui-state-error");
+      }
     });
 
     $(".close").click(function() {

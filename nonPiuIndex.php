@@ -36,9 +36,10 @@
             <form id="logForm" autocomplete="off" > 
                 <label for="logUsr">Username </label><span id="logUsr_err"></span>
                 <input type="text" id="logUsr" name="logUsr">
-                <label for="logPw">Password </label><span id="logPwd_err"></span>
-                <input type="text" id="logPwd" name="logPw">
+                <label for="logPwd">Password </label><span id="logPwd_err"></span>
+                <input type="password" id="logPwd" name="logPwd">
                 <input type="button" id="logSubmit" value="Login">
+                <span id="logErr"></span>
             </form>
         </div>
     </div>
