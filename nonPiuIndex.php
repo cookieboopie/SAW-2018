@@ -31,7 +31,7 @@
                 <input type="password" id="regPwd" name="regPwd">
                 <label for="pwdC">Conferma Password </label><span id="pwdC_err"></span>
                 <input type="password" id="pwdC" name="pwdC">
-                <input type="button" id="regSubmit" value="Crea Account">
+                <input type="submit" id="regSubmit" value="Crea Account">
             </form>
             <form id="logForm" autocomplete="off" > 
                 <label for="logUsr">Username </label><span id="logUsr_err"></span>
@@ -50,3 +50,5 @@
 </body>
 
 </html>
+paperino
+
