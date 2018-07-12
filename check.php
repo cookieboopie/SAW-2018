@@ -15,7 +15,7 @@
         else{
             $varCase    =   3;
             $varCase    =   $_POST['varCase'];
-            switch($varCase){
+            switch($varCase){ //'varCase' is a var associated to a number generated in 3 different phases: '0' when we have to check if the username inserted in the regForm is already used; '1' the same check but for the email and '2' in the login phase, when the 'login' button is pressed and we have to check username and password in the db to make the login thingy possible. '3' shouldn't ever show up, it's just a default thingy, in case something went wrong.
                 case(0):
                 if( isset($regUsername) && !empty($regUsername) ){
                     $regUsername    =   trim($regUsername, " ");

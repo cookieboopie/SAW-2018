@@ -24,18 +24,13 @@ var regPwCValid = false;
   Ma a sto punto faccio ajax direttamente in php (?).
   aggiungere nome e cognome nel regForm.
   nome e congome è strict solo char (occhio alle lingue strane) [a-zA-Z].
-  FACEBOOK usa le seguenti limitazioni (robe non utilizzabili nei nomi): 
+  FACEBOOK usa le seguenti limitazioni per il nome utente (robe non utilizzabili nei nomi): 
     -Symbols, numbers, unusual capitalization, repeating characters or punctuation
     -Characters from multiple languages
     -Titles of any kind (ex: professional, religious, etc)
     -Words, phrases, or nicknames in place of a middle name
     -Offensive or suggestive content of any kind.
-
-
-  Per il LOGIN form, imposto due controlli base base sulla lunghezza dei campi, e poi controllo che sia in database.
-  per il display error, basta mettere "username/password errato in caso di lunghezza errata."
 */
-
 
 function passwordConfirm(pwd,pwdC){
   if($(pwd).val()===$(pwdC).val()){
@@ -88,38 +83,35 @@ function updateTips(errElem,_errText){
       }, 800 );
     };
 
-/*Funzione per validare tutti i campi del logForm quando si preme il tasto 'submit'*/
+/*Function used to (re)validate every field in the logForm 'in toto' when we press 'submit'*/
 function validateLog(input) {
   //check length username
   if( ($('#logUsr').val().length  > 16)  ||  ($('#logUsr').val().length < 3) ){
-    //classe ui-logErr-state-error
     return false;
   }
   else{
-    //check su regExp username
+    //check regExp username
     if( !(usrRegex.test( $('#logUsr').val() )) ){
-      //classe ui-logErr-state-error
       return false;
     }
     else{
       //check length password
       if( $('#logPwd').val().length  > 16  ||  $('#logPwd').val().length  < 3 ){
-        //classe ui-logErr-state-error
         return false;
       }
       else{
         //check regExp password
         if( !(pwdRegex.test( $('#logPwd').val() )) ){
-          //classe ui-logErr-state-error
           return false;
         }
         else
+          //We can press submit if everything valid.
           return true;
       }
     }
   }
 }
-
+/*Function used to validate every single field (triggered by an 'onChange' event listener on form fields) */
 function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
@@ -129,7 +121,7 @@ function validateField(inputObj){
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
       break;
     case("regPwd"): 
-      resetField("#pwdC");/*resetta il campo di conferma della password*/
+      resetField("#pwdC");//it resets the password confirmation field (textarea).
       return(checkLength(('#'+inputObj.id),"password",5,16) &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
       break;
     case("pwdC"):
@@ -139,9 +131,7 @@ function validateField(inputObj){
 }
 
 $('document').ready(function() {
-  
   var obj;
-  
   $("#regForm input").on("change",function(){ 
     var id  = this.id;
     if(validateField(this)  &&  (this.id!=="pwdC" || this.id!=="regPwd"))
@@ -156,7 +146,6 @@ $('document').ready(function() {
                 varCase:  0
               },
               success: function(result){
-                
                 obj = JSON.parse(result);
                 if(obj.found==="1"){
                   $('#'+id).addClass( "ui-state-error" );
@@ -196,9 +185,6 @@ $('document').ready(function() {
   });
 
   $("#regSubmit").click(function(){
-    
-
-    //console.log($('#regForm input'));
     if( ($('#regUsr').val().length !== 0) &&  ($('#regEml').val().length !== 0)  &&  ($('#regPwd').val().length !== 0)  &&  ($('#pwdC').val().length !== 0) ){
       //check length username
       if( ($('#regUsr').val().length  > 16)  ||  ($('#regUsr').val().length < 3) ){
@@ -230,7 +216,7 @@ $('document').ready(function() {
                   return false;
                 }
                 else{
-                  //check regPwd and pwdC must be the same thing
+                  //check: regPwd and pwdC must be the same thing
                   if( !($('#regPwd').val() === $('#pwdC').val()) ){
                     return false;
                   }
@@ -339,4 +325,3 @@ $('document').ready(function() {
   Esempio di SELECT: $sqlQuery = "SELECT * FROM Table WHERE someField='" . $someVar "'"; */
 
 /* Quando in PHP si usa la funzione header(), che sia per veri header della chiamata o che sia per fare un redirect con header('Location: URL'), non ci deve essere niente in output prima. Niente HTML e niente righe vuote. Poichè appena c'è un output gli header vengono impacchettati, inviati e non sono più modificabili. Perciò si usa ob_start e ob_flush / ob_end_flush per mandare tutto al buffer e poi inviare tutti i dati insieme. Esiste anche ob_end_clean che butta via tutto quello che c'è nel buffer ed è utile se vuoi evitare echo indesiderati prima di quelli che ti aspetti. */
-
