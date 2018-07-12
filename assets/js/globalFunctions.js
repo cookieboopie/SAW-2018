@@ -1,8 +1,14 @@
 var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var allValid;
 var pwdRegex  = /^(?=.*\d)(?=.*[a-zA-Z])[A-Za-z\d$@$!%*#?&£.,]{5,}$/ ; /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola/maiusc*/
-var usrRegex  = /^[a-z]([0-9a-z_])+$/i;
+var usrRegex  = /^[a-z]([0-9a-zA-Z_])+$/i;
 var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]$/;
+
+var regUsrValid = false;
+var regPwdValid = false;
+var regEmlValid = false;
+var regPwCValid = false;
+
 
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
@@ -111,38 +117,13 @@ function validateLog(input) {
           return true;
       }
     }
-
   }
-  
-
-
-  /*
-  if( ($('#logUsr').val().length !== 0) ){
-    if(checkLength(('#logUsr'),"username",3,16)  &&  checkRegExp(('#logUsr'),/^[a-z]([0-9a-z_])+$/i,"Username not found!")){
-      //qua convalido password
-      return( checkLength(('#logPwd'),"password",5,16)  &&  checkRegExp(('#logPwd'),pwdRegex,"Password not found!") )
-    }
-    else{
-      updateTips('#logPwd_err',"Insert username correctly!")
-      $('#logUsr').addClass("ui-state-error");
-      $('#logPwd').addClass("ui-state-error");
-      return false;
-    }
-  }
-  else{
-    updateTips('#logUsr_err',"Length of username must be between 3 and 16!");
-    updateTips('#logPwd_err',"Insert username correctly!")
-    $('#logUsr').addClass("ui-state-error");
-    $('#logPwd').addClass("ui-state-error");
-    return false;
-  }
-*/
 }
 
 function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
-      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),/^[a-z]([0-9a-z_])+$/i,"Username may consist of a-z, 0-9,'_' and must start with a letter");
+      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),usrRegex,"Username may consist of a-z, 0-9,'_' and must start with a letter");
       break;
     case("regEml"): 
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
@@ -158,58 +139,169 @@ function validateField(inputObj){
 }
 
 $('document').ready(function() {
-
-    $("#regForm input").on("change",function(){ 
-      var id  = this.id;
-      if(validateField(this)  &&  (this.id!=="pwdC" || this.id!=="regPwd"))
-        {
-          $.ajax({
-            type: "POST",
-            url: "check.php",
-            data: {
-              registerInput: $('#'+this.id).val()
-            },
-            success: function(result){
-              
-              var obj = JSON.parse(result);
-              if(obj.found==="1"){
+  
+  var obj;
+  
+  $("#regForm input").on("change",function(){ 
+    var id  = this.id;
+    if(validateField(this)  &&  (this.id!=="pwdC" || this.id!=="regPwd"))
+      {
+        switch(this.id){
+          case("regUsr"):
+            $.ajax({
+              type: "POST",
+              url: "check.php",
+              data: {
+                registerInputUsr: $('#'+this.id).val(),
+                varCase:  0
+              },
+              success: function(result){
+                
+                obj = JSON.parse(result);
+                if(obj.found==="1"){
+                  $('#'+id).addClass( "ui-state-error" );
+                  updateTips('#'+id+"_err","Username already taken!");
+                }
+                else if(obj.found==="ko"){
+                $('#'+id).addClass( "ui-state-error" );
+                updateTips('#'+id+"_err","Internal error occurred. Change username");
+                }
+              }
+            });
+            break;
+          case("regEml"):
+            $.ajax({
+              type: "POST",
+              url: "check.php",
+              data: {
+                registerInputEml: $('#'+this.id).val(),
+                varCase:  1
+              },
+              success: function(result){
+                obj = JSON.parse(result);
+                if(obj.found==="1"){
+                  $("#"+id).addClass( "ui-state-error" );
+                  updateTips('#'+id+"_err","Email already in use!");
+                }
+                else if(obj.found==="ko"){
                 $("#"+id).addClass( "ui-state-error" );
-                updateTips('#'+id+"_err","Username already taken!");
+                updateTips('#'+id+"_err","Internal error occurred. Change email");
+                }
               }
-              else if(obj.found==="ko"){
-              $("#"+id).addClass( "ui-state-error" );
-              updateTips('#'+id+"_err","Internal error occurred. Change username");
-              }
-            }
-          });
+            });
+            break;
         }
-    });
-    $("#logSubmit").click(function(){
-      $('#logUsr').removeClass("ui-state-error");
-      $('#logPwd').removeClass("ui-state-error");
-      
-      if( validateLog($("#logForm input"))  ){
-        //submit in ajax
-        $.ajax({
-          type: "POST",
-          url: "check.php",
-          data: {
-            loginInputUsr:  $('#logUsr').val(),
-            loginInputPwd:  $('#logPwd').val()
-          },
-          success: function(result){
-            
-            var obj = JSON.parse(result);
-            
-          }
-        });
+        
+      }
+  });
+
+  $("#regSubmit").click(function(){
+    
+
+    //console.log($('#regForm input'));
+    if( ($('#regUsr').val().length !== 0) &&  ($('#regEml').val().length !== 0)  &&  ($('#regPwd').val().length !== 0)  &&  ($('#pwdC').val().length !== 0) ){
+      //check length username
+      if( ($('#regUsr').val().length  > 16)  ||  ($('#regUsr').val().length < 3) ){
+        return false;
       }
       else{
-        $('#logErr').addClass( "scritta da mettere nello span sotto a tutto" );
-        $('#logUsr').addClass("ui-state-error");
-        $('#logPwd').addClass("ui-state-error");
+        //check regExp username
+        if( !(usrRegex.test( $('#regUsr').val() )) ){
+          return false;
+        }
+        else{
+          //check length password
+          if( ($('#regPwd').val().length  > 16)  ||  ($('#regPwd').val().length < 5) ){
+            return false;
+          }
+          else{
+            //check regExp password
+            if( !(pwdRegex.test( $('#regPwd').val() )) ){
+              return false;
+            }
+            else{
+              //check length mail
+              if( ($('#regEml').val().length  > 250)  ||  ($('#regEml').val().length < 6) ){
+                return false;
+              }
+              else{
+                //check regExp mail
+                if( !(emailRegex.test( $('#regEml').val() )) ){
+                  return false;
+                }
+                else{
+                  //check regPwd and pwdC must be the same thing
+                  if( !($('#regPwd').val() === $('#pwdC').val()) ){
+                    return false;
+                  }
+                  else{
+                    //we cannot have ui-state-error classes indicating already used thingy.
+                    if( $('#regForm').find(".ui-state-error").length!==0 ){
+                      return false;
+                    }
+                    else{
+                      $.ajax({
+                        type: "POST",
+                        url: "register.php",
+                        data: {
+                          regUsr: $('#regUsr').val(),
+                          regEml: $('#regEml').val(),
+                          regPwd: $('#regPwd').val()
+                        },
+                        success: function(result){
+                          alert("Ti sei registrato correttamente!");
+                          $(".wrapper").hide();
+                          document.getElementById("regForm").reset();
+                          document.getElementById("logForm").reset();
+
+                        }
+                      });
+                      return true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    });
+    }
+    else{
+
+    }
+  });
+
+  $("#logSubmit").click(function(){
+    $('#logUsr').removeClass("ui-state-error");
+    $('#logPwd').removeClass("ui-state-error");
+    if( validateLog($("#logForm input"))  ){
+      //submit in ajax
+      $.ajax({
+        type: "POST",
+        url: "check.php",
+        dataType: "html",
+        data: {
+          loginInputUsr:  $('#logUsr').val(),
+          loginInputPwd:  $('#logPwd').val(),
+          varCase:  2
+        },
+        success: function(result){
+          if(result==="ok"){
+            alert("Bentornato Pierino!");
+          }
+          else{
+            alert("Fai schifo!");
+          }
+
+        }
+      });
+    }
+    else{
+      $('#logErr').addClass( "scritta da mettere nello span sotto a tutto" );
+      $('#logUsr').addClass("ui-state-error");
+      $('#logPwd').addClass("ui-state-error");
+    }
+  });
 
     $(".close").click(function() {
         $(".ui-state-error").removeClass();
@@ -240,7 +332,6 @@ $('document').ready(function() {
 
 
 });
-
 
 
 /* Nelle query SQL se si può si usano i Prepared Statements in INSERT e in SELECT. Ma se sono query piccole, sono più lenti che usare il mysqli_query o $sqliObj->query, perciò magari si possono invece usare questi due. In questo caso faccio sempre la trim degli input, e poi se sono Integer per validarli bast il cast (int), mentre se sono di tipo String uso mysqli_real_escape_string o $sqliObj->real_escape_string e bisogna ricordarsi di passarli alle query come stringhe,cioè di usare gli apici ''.
