@@ -2,7 +2,7 @@
 @import "780-980.css" screen and (max-width: 980px);
 input{
     
-    width:50%;
+    width:75%;
     display: block;
     margin: 15px auto;
 }
@@ -52,11 +52,10 @@ body{
     display:inline-block;
 }
 .wrapper{
-    background-color: black;
-    opacity:0.7;
+    background-color: rgba(78, 72, 72, 0.8);
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     justify-content: center;
     align-items: center;
@@ -64,25 +63,32 @@ body{
 }
 .inner{
     width: 600px;
-    height: 400px;
-    background-color: white;
+    height: 470px;
     position:relative;
     
 }
 .formHeader{
-    background-color:green;
-    position:absolute;
+    background-color: white;
+    opacity:1;
     display:grid;
-    grid-template-columns: 2;
-    grid-column-gap: 7em;
-    top:10px;
-    width:100%;
-    justify-content:space-evenly;
+    grid-template-columns:repeat(2, 1fr);
+    grid-auto-rows: 20px;/*It sets an height for the rows generated.*/
+    grid-template-rows: 70px; /* top row is 70px in height */
+    grid-auto-rows: 200px; 
+    border-radius:55px 55px 0 0;
+}
+.formHeader > div{
+    border:#333 1px solid;
+    padding:1em;
+}
+.bodyContainer{
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    grid-column: 1/3;
+    grid-row:2/4;
 }
 .formBody{
-    top:15px;
-    margin-top:25px;
     padding:30px;
+    margin-left:25px;
 }
 .closeContainer{
     position:absolute;
@@ -90,7 +96,7 @@ body{
     height:42px;
     width:42px;
     top:-21px;
-    right:-21px;
+    right:-25px;
     overflow: hidden;
     border: 2px solid white;
     background-color: #888888;
@@ -99,13 +105,33 @@ body{
 .close{
     color:white;
     width: 29px;
-    margin: -1px 0 0 6.5px;
+    margin: 2px 0 0 10.75px;
 }
 .reg{
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:20px;
+    color:white;
+    background-color: rgb(32, 194, 0);
     grid-column:1/2;
+    border-radius:55px 0 0 0;
+    text-align:center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 .log{
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size:20px;
+    color:white;
+    background-color: rgb(32, 194, 0);
     grid-column:2/2;
+    text-align: center;
+    border-radius:0 55px 0 0;
+    text-align:center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 .ui-state-error{
     background-color: rgb(255, 57, 57);
