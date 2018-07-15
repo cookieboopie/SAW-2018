@@ -35,11 +35,11 @@
                             <span id="pwdC_err"></span>
                             <label for="pwdC">Conferma Password </label><input type="password" id="pwdC" name="pwdC">
                             
-                            <input type="button" id="regSubmit" value="Crea Account">
+                            <input type="button" id="regSubmit" class="btn btn-primary" value="Crea Account">
                         </form>
 
                         <form id="logForm" autocomplete="off" > 
-                            <span id="logErr"></span>   
+                            <span id="logErr"></span> 
 
                             <label for="logUsr">Username </label><input type="text" id="logUsr" name="logUsr">
                             
@@ -47,7 +47,7 @@
                             
                             <label for="logPwd">Password </label><input type="password" id="logPwd" name="logPwd">
 
-                            <input type="button" id="logSubmit" value="Login">
+                            <input type="button" id="logSubmit" class="btn btn-primary" value="Login">
                         </form>
                     </div>
                 </div>

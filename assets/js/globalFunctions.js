@@ -277,13 +277,16 @@ $('document').ready(function() {
           }
           else{
             alert("Fai schifo!");
+            $('#logErr').text( "Username or Password wrong" );
+            $('#logUsr').addClass("ui-state-error");
+            $('#logPwd').addClass("ui-state-error");
           }
 
         }
       });
     }
     else{
-      $('#logErr').addClass( "Username or Password wrong" );
+      updateTips('#logErr',"Username or Password wrong");
       $('#logUsr').addClass("ui-state-error");
       $('#logPwd').addClass("ui-state-error");
     }
