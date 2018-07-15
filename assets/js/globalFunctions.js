@@ -285,7 +285,11 @@ $('document').ready(function() {
       });
     }
     else{
+<<<<<<< HEAD
       updateTips('#logErr',"Username or Password wrong");
+=======
+      $('#logErr').addClass( "Username or Password wrong" );
+>>>>>>> a2b5a722193e393147024513043ddeff565f1158
       $('#logUsr').addClass("ui-state-error");
       $('#logPwd').addClass("ui-state-error");
     }

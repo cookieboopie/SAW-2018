@@ -15,6 +15,7 @@ span{
     background-color: rgba(0, 0, 0, 0.699);
     width: 100%;
     height: 100%;
+<<<<<<< HEAD
     justify-content: center;
     align-items: center;
     position: fixed; 
@@ -22,12 +23,22 @@ span{
     left: 0; 
     min-width: 100%;
     min-height: 100%;
+=======
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+>>>>>>> a2b5a722193e393147024513043ddeff565f1158
     display:none;
 }
 .inner{
     border-radius: 25px 25px 0 0;
     width: 600px;
+<<<<<<< HEAD
     height: 415px;
+=======
+    height: 400px;
+>>>>>>> a2b5a722193e393147024513043ddeff565f1158
     background-color: white;
     position:relative;
 }
@@ -73,17 +84,25 @@ span{
 .reg:hover{
     background-color: rgba(14, 51, 105, 0.699);
 }
+<<<<<<< HEAD
 
 #regForm{
     display: none;
     grid-template-columns: 175px 1fr;
     grid-template-rows: 16px 25px 16px 25px 16px 25px 16px 25px 35px;
+=======
+#regForm{
+    display: none;
+    grid-template-columns: 175px 1fr;
+    grid-template-rows: 13px 25px 13px 25px 13px 25px 13px 25px 25px;
+>>>>>>> a2b5a722193e393147024513043ddeff565f1158
     grid-gap: 16px;
     margin-right:80px;
 }
 #logForm{
     display: none;
     grid-template-columns: 200px 1fr;
+<<<<<<< HEAD
     grid-template-rows: 50px 30px 30px 30px;
     grid-gap: 16px;
     margin-right:150px;
@@ -93,6 +112,12 @@ span{
     align-items: flex-end;
     
 }
+=======
+    grid-template-rows: repeat(4, 30px);
+    grid-gap: 16px;
+    margin-right:150px;
+}
+>>>>>>> a2b5a722193e393147024513043ddeff565f1158
 .ui-state-error{
     background-color: rgb(255, 57, 57);
     border: 2px solid rgb(255, 0, 0);
