@@ -1,9 +1,9 @@
 <?php
 
     $servername = "localhost";
-    $username = "S4213112";
-    $password = "saw@2018";
-    $dbname = "S4213112";
+    $username = "root";
+    $password = "ALakazam@123";
+    $dbname = "Users";
     $conn = mysqli_connect($servername, $username, $password, $dbname);
     $regUsr =   $_POST["regUsr"];
     $regEml =   $_POST["regEml"];
