@@ -1,7 +1,7 @@
 var emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var allValid;
 var pwdRegex  = /^(?=.*\d)(?=.*[a-zA-Z])[A-Za-z\d$@$!%*#?&£.,]{5,}$/ ; /*almeno 5 caratteri con almeno 1 numero e una lettera minuscola/maiusc*/
-var usrRegex  = /^[a-z]([0-9a-zA-Z_])+$/i;
+var usrRegex  = /^([0-9a-zA-Z_])+$/i;
 var nameRegex = /^[a-zA-Z\-_ ’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]$/;
 
 var regUsrValid = false;
@@ -40,7 +40,7 @@ function passwordConfirm(pwd,pwdC){
   }
   else {
     $(pwdC).addClass("ui-state-error");
-    updateTips("#pwdC_err","password doesn't match");
+    updateTips("#pwdC_err","Password doesn't match");
     return  false;
   }
 };
@@ -115,14 +115,14 @@ function validateLog(input) {
 function validateField(inputObj){ 
   switch(inputObj.id){
     case("regUsr"): 
-      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),usrRegex,"Username may consist of a-z, 0-9,'_' and must start with a letter");
+      return (checkLength(('#'+inputObj.id),"username",3,16)) && checkRegExp(('#'+inputObj.id),usrRegex,"Username may consist of a-z, 0-9,'_'");
       break;
     case("regEml"): 
       return(checkLength(('#'+inputObj.id),"email", 6,250)  &&  checkRegExp(('#'+inputObj.id),emailRegex,"eg. ab@abcde.com"));
       break;
     case("regPwd"): 
       resetField("#pwdC");//it resets the password confirmation field (textarea).
-      return(checkLength(('#'+inputObj.id),"password",5,16) &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Password MUST contain at least five characters of which at least one number"));
+      return(checkLength(('#'+inputObj.id),"password",5,16) &&  checkRegExp(('#'+inputObj.id),pwdRegex,"Insert at least 5 characters and 1 number"));
       break;
     case("pwdC"):
       return(passwordConfirm("#regPwd","#pwdC"));
@@ -180,7 +180,6 @@ $('document').ready(function() {
             });
             break;
         }
-        
       }
   });
 
@@ -277,13 +276,16 @@ $('document').ready(function() {
           }
           else{
             alert("Fai schifo!");
+            $('#logErr').text( "Username or Password wrong" );
+            $('#logUsr').addClass("ui-state-error");
+            $('#logPwd').addClass("ui-state-error");
           }
 
         }
       });
     }
     else{
-      $('#logErr').addClass( "scritta da mettere nello span sotto a tutto" );
+      updateTips('#logErr',"Username or Password wrong");
       $('#logUsr').addClass("ui-state-error");
       $('#logPwd').addClass("ui-state-error");
     }
@@ -309,10 +311,10 @@ $('document').ready(function() {
 
     $(".reg").click(function(){
         $("#logForm").hide();
-        $("#regForm").show();
+        $("#regForm").css("display","grid");
     })
     $(".log").click(function(){
-        $("#logForm").show();
+        $("#logForm").css("display","grid");
         $("#regForm").hide();
     })
 
