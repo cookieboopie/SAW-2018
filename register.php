@@ -1,9 +1,9 @@
 <?php
 
     $servername = "localhost";
-    $username = "root";
-    $password = "Alakazam@123";
-    $dbname = "Accounts";
+    $username = "S4213112";
+    $password = "saw@2018";
+    $dbname = "S4213112";
     $conn = mysqli_connect($servername, $username, $password, $dbname);
     $regUsr =   $_POST["regUsr"];
     $regEml =   $_POST["regEml"];
@@ -28,7 +28,7 @@
             $regPwd   =   password_hash($regPwd, PASSWORD_DEFAULT);
 
             //The following sql thing is a prepared statements, in fact we have ? instead '$data', done in a procedural way.
-            $sql = "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO Accounts (username, email, password) VALUES (?, ?, ?)";
 
             if($stmt = mysqli_prepare($conn, $sql)){
                 mysqli_stmt_bind_param($stmt, "sss", $regUsr, $regEml, $regPwd); //'sss' specify that the three arguments given to the query are string.

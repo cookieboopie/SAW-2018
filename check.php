@@ -1,8 +1,8 @@
 <?php
         $servername = "localhost";
-        $username = "root";
-        $password = "Alakazam@123";
-        $dbname = "Accounts";
+        $username = "S4213112";
+        $password = "saw@2018";
+        $dbname = "S4213112";
         $conn = mysqli_connect($servername, $username, $password, $dbname);
         $regUsername   =   $_POST["registerInputUsr"];
         $regEmail   =   $_POST["registerInputEml"];
@@ -21,7 +21,7 @@
                     $regUsername    =   trim($regUsername, " ");
                     $regUsername    =   preg_replace('/\s+/', '', $regUsername);
                     $myJSON =   new stdClass();
-                    $query  =   mysqli_query($conn,"SELECT * FROM Users WHERE USERNAME =   '$regUsername' ");
+                    $query  =   mysqli_query($conn,"SELECT * FROM Accounts WHERE USERNAME =   '$regUsername' ");
                     $find   =   mysqli_num_rows($query);
                     if($find===1)
                         $myJSON ->found="1";
@@ -44,7 +44,7 @@
                     $regEmail    =   trim($regEmail, " ");
                     $regEmail    =   preg_replace('/\s+/', '', $regEmail);
                     $myJSON =   new stdClass();
-                    $query  =   mysqli_query($conn,"SELECT * FROM Users WHERE EMAIL =   '$regEmail' ");
+                    $query  =   mysqli_query($conn,"SELECT * FROM Accounts WHERE EMAIL =   '$regEmail' ");
                     $find   =   mysqli_num_rows($query);
                     if($find===1)
                         $myJSON ->found="1";
@@ -73,7 +73,7 @@
                         $logPassword   =   preg_replace('/\s+/', '', $logPassword);
                         $logPassword   =   mysqli_real_escape_string($conn, $logPassword);
                         
-                        $query  =   mysqli_query($conn,"SELECT PASSWORD FROM Users WHERE USERNAME = '$logUsername' ");
+                        $query  =   mysqli_query($conn,"SELECT PASSWORD FROM Accounts WHERE USERNAME = '$logUsername' ");
                         $result =   mysqli_fetch_assoc($query);
                         if(password_verify( $logPassword, $result['PASSWORD'] )){
                             echo ("ok");
