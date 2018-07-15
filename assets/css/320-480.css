@@ -1,0 +1,7 @@
+#regForm{
+    display: none;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 13px 25px 13px 25px 13px 25px 13px 25px 25px;
+    grid-gap: 0px;
+    margin-right:0px;
+}
