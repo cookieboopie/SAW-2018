@@ -234,7 +234,7 @@ $('document').ready(function() {
                           regPwd: $('#regPwd').val()
                         },
                         success: function(result){
-                          alert("Ti sei registrato correttamente!");
+                          alert("Ti sei registrato correttamente! Per favora controlla la tua email.");
                           $(".wrapper").hide();
                           document.getElementById("regForm").reset();
                           document.getElementById("logForm").reset();

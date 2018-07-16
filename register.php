@@ -1,6 +1,5 @@
 <?php
-	use PHPMailer\PHPMailer\PHPMailer;
-	
+
     $servername = "localhost";
     $username = "S4213112";
     $password = "saw@2018";
@@ -45,30 +44,48 @@
                 mysqli_stmt_execute($stmt);
                 }
                
-			include_once	"assets/PHPMailer/PHPMailer.php";
-            
-            require 'assets/PHPMailer/Exception.php';
-			require 'assets/PHPMailer/PHPMailer.php';
-			require 'assets/PHPMailer/SMTP.php';
-            
-            $mailer	=	new	PHPMailer();
-            $mailer->setFrom('nottoobed@libero.it','NotTooBed Sharing!');
-            $mailer->addAddress($regEml);
-            $mailer->Subject	=	"Please verify email!";
+            require '/var/libsaw/sendmail/autoload.php';
+            $mailer = new PHPMailer;
+
             $mailer->IsSMTP();
-            $mailer->Host   =   'smtp.libero.it';
-			$mailer->Port   =   587;
-			$mailer->Username   =   'nottoobed@libero.it';
-			$mailer->Password   =   'saw@2018';
-			$mailer->SMTPSecure =   'tls';
-			$mailer->SMTPAuth   =   true;
-            $mailer->Body="
-				Please click on the link below:<br><br>
-				
-				<a href='http://webdev.dibris.unige.it/~S4213112/saw/gab/regForm/confirm.php?email=$regEml&token=$token'>Click Here</a>
-				";
-			$mailer->IsHTML(true);
-            $mailer->send();
+            $mailer->SMTPSecure = 'tls';
+            $mailer->SMTPAuth = true;
+
+            $mailer->Host = 'smtp.libero.it';
+            $mailer->Port = 587;
+
+            $mailer->Username = 'nottoobed@libero.it';
+            $mailer->Password = 'saw@2018';
+
+            $mailer->AddReplyTo('noreply@ntbed.it');
+            $mailer->setFrom('nottoobed@libero.it', 'NotTooBed Sharing');
+            $mailer->addAddress($regEml);
+
+            $mailer->Subject  = 'Account Activation';
+            $mailer->AltBody = 'Thanks for signing up ' . 'mario'. '
+
+
+            Your account has been created, you can login with the following credentials by copying in the URL the link below.
+            http://webdev.dibris.unige.it/~S4213112/saw/gab/regForm/confirm.php?token='.$token.'
+
+            NotTooBed';
+            $mailer->Body = '
+            
+            Thanks for signing up ' . 'mario'. '<br><br>  (inserire lo user da sessione al posto di mario)
+            Your account has been created, you can login with the following credentials after you have activated your account by pressing the URL below.
+                                    
+                                    
+            Perfavore clicca <a style="color:#2f889a" href="https://webdev.dibris.unige.it/~S4213112/filePhpCheMettaA1IlEmailConfirmed' . 'mario' . '"> QUI </a> per attivare il tuo account.
+                                    
+            '; 
+            $mailer->IsHTML(true);
+            if($mailer->send()){
+                //invio riuscito
+            } 
+            else{
+                //mettere condizioni di rendirizzamento in caso di invio non riuscito (per esempio su pagina 404 modificata) o di display di qualche messaggio.
+            }
+
             mysqli_close($conn);
             unset($conn);
             }
