@@ -1,8 +1,8 @@
 <?php
         $servername = "localhost";
-        $username = "root";
-        $password = "Alakazam@123";
-        $dbname = "Users";
+        $username = "S4213112";
+        $password = "saw@2018";
+        $dbname = "S4213112";
         $conn = mysqli_connect($servername, $username, $password, $dbname);
         
         if (mysqli_connect_errno($conn)) {
@@ -73,7 +73,7 @@
                         $logPassword   =   preg_replace('/\s+/', '', $logPassword);
                         $logPassword   =   mysqli_real_escape_string($conn, $logPassword);
                         
-                        $query  =   mysqli_query($conn,"SELECT PASSWORD FROM Accounts WHERE USERNAME = '$logUsername' ");
+                        $query  =   mysqli_query($conn,"SELECT PASSWORD FROM Users WHERE USERNAME = '$logUsername' ");
                         $result =   mysqli_fetch_assoc($query);
                         if(password_verify( $logPassword, $result['PASSWORD'] )){
                             echo ("ok");
