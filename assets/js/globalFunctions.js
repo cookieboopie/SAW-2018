@@ -234,7 +234,7 @@ $('document').ready(function() {
                           regPwd: $('#regPwd').val()
                         },
                         success: function(result){
-                          alert("Ti sei registrato correttamente!");
+                          alert("Ti sei registrato correttamente! Ti è stata inviata una mail di conferma");
                           $(".wrapper").hide();
                           document.getElementById("regForm").reset();
                           document.getElementById("logForm").reset();
@@ -275,7 +275,7 @@ $('document').ready(function() {
             alert("Bentornato Pierino!");
           }
           else{
-            alert("Fai schifo!");
+            alert(""+result);
             $('#logErr').text( "Username or Password wrong" );
             $('#logUsr').addClass("ui-state-error");
             $('#logPwd').addClass("ui-state-error");
