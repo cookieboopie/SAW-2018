@@ -9,7 +9,6 @@ var regPwdValid = false;
 var regEmlValid = false;
 var regPwCValid = false;
 
-
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
    Il check si può fare on("input", callback) o on("change", callback") e, magari, che al successivo input l'eventuale classe di errore viene disattivata. */
@@ -180,6 +179,7 @@ $('document').ready(function() {
             });
             break;
         }
+        
       }
   });
 
@@ -234,7 +234,7 @@ $('document').ready(function() {
                           regPwd: $('#regPwd').val()
                         },
                         success: function(result){
-                          alert("Ti sei registrato correttamente! Ti è stata inviata una mail di conferma");
+                          alert("Ti sei registrato correttamente!");
                           $(".wrapper").hide();
                           document.getElementById("regForm").reset();
                           document.getElementById("logForm").reset();
@@ -264,7 +264,6 @@ $('document').ready(function() {
       $.ajax({
         type: "POST",
         url: "check.php",
-        dataType: "html",
         data: {
           loginInputUsr:  $('#logUsr').val(),
           loginInputPwd:  $('#logPwd').val(),
@@ -272,10 +271,12 @@ $('document').ready(function() {
         },
         success: function(result){
           if(result==="ok"){
-            alert("Bentornato Pierino!");
+            alert("Bentornato!");
+	        $(".wrapper").hide();
+			window.open("index.php","_self");
           }
           else{
-            alert(""+result);
+            alert("Fai schifo!");
             $('#logErr').text( "Username or Password wrong" );
             $('#logUsr').addClass("ui-state-error");
             $('#logPwd').addClass("ui-state-error");
@@ -285,7 +286,7 @@ $('document').ready(function() {
       });
     }
     else{
-      updateTips('#logErr',"Username or Password wrong");
+      updateTips('#logErr',"Username or rrrPassword wrong");
       $('#logUsr').addClass("ui-state-error");
       $('#logPwd').addClass("ui-state-error");
     }
@@ -298,13 +299,12 @@ $('document').ready(function() {
         document.getElementById("regForm").reset();
         document.getElementById("logForm").reset();
     });
-
     $(".regBtn").click(function(){
         $(".wrapper").css("display","flex");
         $(".reg").click();
     });
 
-    $(".logBtn").click(function(){
+    $(".btn.btn-primary").click(function(){
         $(".wrapper").css("display","flex");
         $(".log").click();
     });
