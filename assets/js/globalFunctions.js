@@ -238,7 +238,6 @@ $('document').ready(function() {
                           $(".wrapper").hide();
                           document.getElementById("regForm").reset();
                           document.getElementById("logForm").reset();
-
                         }
                       });
                       return true;

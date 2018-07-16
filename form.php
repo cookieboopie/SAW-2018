@@ -14,8 +14,6 @@
             <section class="wrapper">
                 <div class="inner">
                     
-
-
                     <div class="formHeader">
                         <div class="reg" style="cursor: pointer">Register</div>
                         <div class="log" style="cursor: pointer">Login</div>
