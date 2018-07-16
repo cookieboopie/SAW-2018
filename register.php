@@ -56,12 +56,12 @@
             $mailer->addAddress($regEml);
             $mailer->Subject	=	"Please verify email!";
             $mailer->IsSMTP();
-            $mailer->Host = 'smtp.libero.it';
-			$mailer->Port = 587;
-			$mailer->Username = 'nottoobed@libero.it';
-			$mailer->Password = 'saw@2018';
-			$mailer->SMTPSecure = 'tls';
-			$mailer->SMTPAuth = true;
+            $mailer->Host   =   'smtp.libero.it';
+			$mailer->Port   =   587;
+			$mailer->Username   =   'nottoobed@libero.it';
+			$mailer->Password   =   'saw@2018';
+			$mailer->SMTPSecure =   'tls';
+			$mailer->SMTPAuth   =   true;
             $mailer->Body="
 				Please click on the link below:<br><br>
 				
