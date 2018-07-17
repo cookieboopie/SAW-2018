@@ -9,6 +9,7 @@ var regPwdValid = false;
 var regEmlValid = false;
 var regPwCValid = false;
 
+
 /* Trovare le regex di validazione di tutti i campi del Form, inserirle nell'array e testare i campi del form con la rispettiva regex.
    Se un campo fallisce il check, attribuirgli una classe inputError e un messaggio in uno span.
    Il check si può fare on("input", callback) o on("change", callback") e, magari, che al successivo input l'eventuale classe di errore viene disattivata. */
@@ -179,7 +180,6 @@ $('document').ready(function() {
             });
             break;
         }
-        
       }
   });
 
@@ -234,7 +234,7 @@ $('document').ready(function() {
                           regPwd: $('#regPwd').val()
                         },
                         success: function(result){
-                          alert("Ti sei registrato correttamente!");
+                          alert("Ti sei registrato correttamente! Ti è stata inviata una mail di conferma");
                           $(".wrapper").hide();
                           document.getElementById("regForm").reset();
                           document.getElementById("logForm").reset();
@@ -264,19 +264,23 @@ $('document').ready(function() {
       $.ajax({
         type: "POST",
         url: "check.php",
+        dataType: "html",
         data: {
           loginInputUsr:  $('#logUsr').val(),
           loginInputPwd:  $('#logPwd').val(),
+          checkB: $('#checkB').is(':checked'),
           varCase:  2
         },
         success: function(result){
           if(result==="ok"){
-            alert("Bentornato!");
-	        $(".wrapper").hide();
-			window.open("index.php","_self");
+            alert("Bentornato Pierino!");
+            $(".wrapper").hide();
+            document.getElementById("regForm").reset();
+            document.getElementById("logForm").reset();
+            location.reload();
           }
           else{
-            alert("Fai schifo!");
+            alert(result);
             $('#logErr').text( "Username or Password wrong" );
             $('#logUsr').addClass("ui-state-error");
             $('#logPwd').addClass("ui-state-error");
@@ -286,12 +290,12 @@ $('document').ready(function() {
       });
     }
     else{
-      updateTips('#logErr',"Username or rrrPassword wrong");
+      updateTips('#logErr',"Username or Password wrong");
       $('#logUsr').addClass("ui-state-error");
       $('#logPwd').addClass("ui-state-error");
     }
   });
-
+/*
     $(".close").click(function() {
         $(".ui-state-error").removeClass();
         $("[id$='_err']").text("");
@@ -299,12 +303,8 @@ $('document').ready(function() {
         document.getElementById("regForm").reset();
         document.getElementById("logForm").reset();
     });
-    $(".regBtn").click(function(){
-        $(".wrapper").css("display","flex");
-        $(".reg").click();
-    });
-
-    $(".btn.btn-primary").click(function(){
+*/
+    $("#idContact").click(function(){
         $(".wrapper").css("display","flex");
         $(".log").click();
     });
@@ -312,11 +312,28 @@ $('document').ready(function() {
     $(".reg").click(function(){
         $("#logForm").hide();
         $("#regForm").css("display","grid");
-    })
+    });
     $(".log").click(function(){
         $("#logForm").css("display","grid");
         $("#regForm").hide();
-    })
+    });
+
+    $("#checkL").click(function(){
+      $("#checkB").click();
+    });
+
+    $(document).mouseup(function(e) {
+      var container = $(".inner");
+      // if the target of the click isn't the container nor a descendant of the container
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+          $('.wrapper').css("display","none");
+          $(".ui-state-error").removeClass();
+          $("[id$='_err']").text("");
+          $("[id$='Err']").text("");
+          document.getElementById("regForm").reset();
+          document.getElementById("logForm").reset();
+      }
+    });
 
 
 });

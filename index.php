@@ -5,7 +5,25 @@
 	//varname e' l'id dell'utente loggato.
 	if(isset($_SESSION['varname'])){
 		$id_value= $_SESSION['varname']; //se e' loggato prendo il suo valore es. id_value = 3
-	}
+  }
+
+
+  //controlla se nel pc (lato client) sia presente un cookie con campo 'token' se si si collega al db e fa un piccolo check, per vedere se esiste un utente che abbia proprio quel token. Se si allora ti logga in automatico dando il valore dell'ID associato al cookie a $id_value. con la sessione qua sopra non so come interagire. Cioè se sei già loggato e torni alla home, ma non avevi messo il remember, con la sessione funziona, se hai messo il remember e sei loggato, torni nella home esegue entrambi gli if, il che non comporta nulla, solo il fatto che id value viene assegnato due volte.
+  if(isset($_COOKIE["token"]) && !empty($_COOKIE["token"])){
+    require 'assets/dbConn.php';
+    $query  = "SELECT ID FROM Users WHERE COOKIE = ?";
+    $stmt   = mysqli_prepare($conn,$query);
+    mysqli_stmt_bind_param($stmt,"s",$_COOKIE["token"]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $find   = mysqli_num_rows($result);
+    $result = $result->fetch_assoc();
+    if($find===1){
+      $id_value = $result['ID'];
+    }
+
+      
+  }
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +41,7 @@
     <script src="assets/js/globalFunctions.js"></script>
 	
     <link async defer rel="stylesheet" type="text/css" href="assets/css/globalStyle2.css">
-    <title>NotToBed</title>
+    <title>NotTooBed</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -41,65 +59,72 @@
 
 <body>
 
-    <!-- Navigation --> 
-    <nav class="navbar navbar-light bg-light static-top">
-		<div class="container">
-			<!-- Controllo se si e' loggati. In caso positivo mostro bottone profilo, se no mostro bottone login --> 
-			<?php if(isset($id_value)){	
-				echo '<button class="btn" id="profilo" onclick="window.open(\'profilo.php\',\'_self\')">Profilo</button>'; 
-			}else{
-				echo '<a class="navbar-brand" href="index.php">NotTooBed!</a>';
-			}
-			?>
-		
-			<?php if(!isset($id_value)){
-				echo '<button class="btn btn-primary" id="idContact">Login</button>';
-			}else{
-				echo '<button class="btn" id="logout" onclick="window.open(\'logout.php\',\'_self\')">Logout</button>'; 
-			}
-			?>
-		</div>
-    </nav>
+  <!-- Navigation --> 
+  <nav class="navbar navbar-light bg-light static-top">
+  <div class="container">
+    <!-- Controllo se si e' loggati. In caso positivo mostro bottone profilo, se no mostro bottone login --> 
+    <?php if(isset($id_value)){	
+      echo '<button class="btn" id="profilo" onclick="window.open(\'profilo.php\',\'_self\')">Profilo</button>'; 
+    }else{
+      echo '<a class="navbar-brand" href="index.php">NotTooBed!</a>';
+    }
+    ?>
+  
+    <?php if(!isset($id_value)){
+      echo '<button class="btn btn-primary" id="idContact">Login</button>';
+    }else{
+      echo '<button class="btn" id="logout" onclick="window.open(\'logout.php\',\'_self\')">Logout</button>'; 
+    }
+    ?>
+  </div>
+  </nav>
 	
 	
-	<section class="wrapper" style="z-index:+4">
-		<div class="inner" >		
-			<div class="formHeader">
-				<div class="reg" style="cursor: pointer">Register</div>
-				<div class="log" style="cursor: pointer">Login</div>
-			</div>
-			
-			<div class="formBody">
-				<form id="regForm" autocomplete="off">
-					<span id="regUsr_err"></span>
-					<label for="regUsr">Username </label><input type="text" id="regUsr" name="regUsr">
-					
-					<span id="regEml_err"></span>
-					<label for="regEml">E-mail </label><input type="text" id="regEml" name="regEml">
-					
-					<span id="regPwd_err"></span>
-					<label for="regPwd">Password </label><input type="password" id="regPwd" name="regPwd">
-					
-					<span id="pwdC_err"></span>
-					<label for="pwdC">Conferma Password </label><input type="password" id="pwdC" name="pwdC">
-					
-					<input type="button" id="regSubmit" class="btn btn-primary" value="Crea Account">
-				</form>
+  <section class="wrapper">
+    <div class="inner">
+        
+      <div class="formHeader">
+          <div class="reg" style="cursor: pointer">Register</div>
+          <div class="log" style="cursor: pointer">Login</div>
+      </div>
 
-				<form id="logForm" autocomplete="off" > 
-					<span id="logErr"></span> 
+      <div class="formBody">
+        <form id="regForm" autocomplete="off">
+            <span id="regUsr_err"></span>
+            <label for="regUsr">Username </label><input type="text" id="regUsr" name="regUsr">
+            
+            <span id="regEml_err"></span>
+            <label for="regEml">E-mail </label><input type="text" id="regEml" name="regEml">
+            
+            <span id="regPwd_err"></span>
+            <label for="regPwd">Password </label><input type="password" id="regPwd" name="regPwd">
+            
+            <span id="pwdC_err"></span>
+            <label for="pwdC">Conferma Password </label><input type="password" id="pwdC" name="pwdC">
+            
+            <input type="button" id="regSubmit" class="btn btn-primary" value="Crea Account">
+        </form>
 
-					<label for="logUsr">Username </label><input type="text" id="logUsr" name="logUsr">
-					
-					<span></span>
-					
-					<label for="logPwd">Password </label><input type="password" id="logPwd" name="logPwd">
+        <form id="logForm" autocomplete="off" > 
+            <span id="logErr"></span> 
 
-					<input type="button" id="logSubmit" class="btn btn-primary" value="Login">
-				</form>
-			</div>
-		</div>
-	</section>
+            <label for="logUsr">Username </label><input type="text" id="logUsr" name="logUsr">
+            
+            <span></span>
+            
+            <label for="logPwd">Password </label><input type="password" id="logPwd" name="logPwd">
+
+            <span   id="check">
+                <input type="checkbox" id="checkB">
+                <label id="checkL">Remember Me</label>
+            </span>
+            
+            <input type="button" id="logSubmit" class="btn btn-primary" value="Login">
+        </form>
+      </div>
+      
+    </div>
+  </section>
 	
 	
 
@@ -221,7 +246,7 @@
                 <a href="#">Privacy</a>
               </li>
             </ul>
-            <p class="text-muted small mb-4 mb-lg-0">&copy; NotToBed!</p>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; NotTooBed!</p>
           </div>
           <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
             <ul class="list-inline mb-0">

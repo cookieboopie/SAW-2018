@@ -15,7 +15,7 @@
 		echo $reviewHost;
 	}
 		
-	$conn =  mysqli_connect("localhost", "root", "", "testdb");
+	require 'assets/dbConn.php';
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);

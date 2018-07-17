@@ -1,6 +1,9 @@
 <?php
 	session_start();
 	$id_value = null;
+	if(isset($_COOKIE["token"])	&&	!empty($_COOKIE["token"])){
+		setcookie('token',null,time()-3600);
+	}
 	if(isset($_SESSION['varname'])){
 		session_destroy();
 		echo 'Hai appena eseguito il Logout.<br> <button class="btn btn-primary" onclick="window.open(\'index.php\')">TORNA ALLA HOME PAGE</button>';

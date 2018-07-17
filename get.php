@@ -16,8 +16,10 @@
 	}
 	if(isset($_GET['star'])){
 		$avgStars= $_GET['star'];
-	}
-	
+  }
+  
+  require 'assets/dbConn.php';
+  
 	$conn =  mysqli_connect("localhost", "root", "", "testdb");
 	// Check connection
 	if ($conn->connect_error) {

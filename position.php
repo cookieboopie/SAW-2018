@@ -50,7 +50,7 @@
 			move_uploaded_file($tmp_name, $location.$name1.".jpg");
 		}
 		
-		$conn =  mysqli_connect("localhost", "root", "", "testdb");
+		require 'assets/dbConn.php';
 		// Check connection
 		if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
